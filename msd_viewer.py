@@ -5,13 +5,27 @@ panel serve msd_viewer.py
 
 """
 
-
+import os
 import h5py
 import panel as pn
+from dotenv import load_dotenv
 
 pn.extension()
 
-file_selector = pn.widgets.FileSelector("~")
+
+def initialize_MSD_file_selector():
+    """
+    Read Million Song Dataset's folder location from an env-file ("MSD_PATH").
+
+    If "MSD_PATH" is not set or env-file is missing, the FileSelector interprets None value as "~".
+
+    Hint: For debugging purposes, setting the path makes navigation much quicker and easier.
+    """
+    load_dotenv()
+    MSD_PATH = os.environ.get("MSD_PATH")
+    return pn.widgets.FileSelector(MSD_PATH)
+
+file_selector = initialize_MSD_file_selector()
 
 
 @pn.depends(file_selector)
