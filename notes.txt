@@ -1,0 +1,14 @@
+Instructions for MSD to Jam:
+http://millionsongdataset.com/thisismyjam/
+
+Thisismyjam to MSD matching script:
+https://gist.github.com/craffel/9b1dd580ed338873cccb
+
+Citing comment:
+If you use this data, please cite the following report:
+Andreas Jansson, Colin Raffel, and Tillman Weyde. "This is my Jam -- Data Dump", in 16th International Society for Music Information Retrieval Conference Late Breaking and Demo Papers, 2015.
+
+Citing the MSD dataset:
+Thierry Bertin-Mahieux, Daniel P.W. Ellis, Brian Whitman, and Paul Lamere. 
+The Million Song Dataset. In Proceedings of the 12th International Society
+for Music Information Retrieval Conference (ISMIR 2011), 2011.

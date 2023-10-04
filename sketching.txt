@@ -1,0 +1,37 @@
+Pipeline
+
+Create dataframe with song info
+Create K-nearest neighbor model
+Take 1 song from the user
+Find K-nearest neighbor songs
+Compare with thisismyjam
+
+Input:
+songs
+
+find the given songs
+extract info about them
+- genre
+- artist
+- when was the song released?
+- location?
+Extra
+- lyrics?
+
+k-nearest neighbor
+
+Validate with this is my jam?
+
+Needed files from our side:
+- Script for extracting info about song from MSD
+    - save information about songs to separate file so we don't have to read all the .h5 files in the MSD subset every time the program is run
+    - read the saved info with Pandas, save in CSV format?
+- Create k nearest neighbor model
+- Create Panel interface as application
+    - Search bar that filters song table
+    - Somehow choose a song that is added to a list of songs that should be considered in the recommendations
+    - Jupyter notebook or Python file runner
+- Script for validation in thisismyjam
+    - pick users from TIMJ that have liked the original given songs and check if the recommended songs are also in their list of liked songs
+    - separate thing from the user interface for using the application
+    - process the data to get song -> user -> check if the recommended song is also among the songs of users that liked the song given by the user
