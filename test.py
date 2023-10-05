@@ -29,7 +29,6 @@ h5 = g.open_h5_file_read("/home/taleiko/Documents/Introduction to data science/M
 # print(g.get_artist_playmeid(h5))
 # print(g.get_artist_7digitalid(h5))
 # print(g.get_release_7digitalid(h5))
-# print(g.get_song_id(h5))
 # print(g.get_track_7digitalid(h5))
 # print(g.get_audio_md5(h5))
 # print(g.get_key(h5))
@@ -60,8 +59,6 @@ h5 = g.open_h5_file_read("/home/taleiko/Documents/Introduction to data science/M
 # print(g.get_artist_mbtags_count(h5))
 
 # Exact meaning unclear
-# print(g.get_artist_latitude(h5))
-# print(g.get_artist_longitude(h5))
 # print(g.get_analysis_sample_rate(h5))
 # print(g.get_artist_terms_freq(h5))
 # print(g.get_artist_terms_weight(h5))
@@ -76,7 +73,10 @@ h5 = g.open_h5_file_read("/home/taleiko/Documents/Introduction to data science/M
 # print(g.get_energy(h5))
 
 # Useful
+print(g.get_song_id(h5))
 print(g.get_artist_location(h5))
+print(g.get_artist_latitude(h5))
+print(g.get_artist_longitude(h5))
 print(g.get_artist_name(h5))
 print(g.get_title(h5))
 print(g.get_artist_terms(h5))

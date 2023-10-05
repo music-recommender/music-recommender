@@ -1,13 +1,14 @@
 After looking through the available data in the Million Songs (MSD) dataset it seemed like the information that can be retrieved with the following getters is useful:
 ```
 # Useful
-g.get_title(h5)
-g.get_artist_name(h5)
-g.get_artist_terms(h5)
-g.get_artist_location(h5)
-g.get_danceability(h5)
-g.get_tempo(h5)
-g.get_year(h5)
+get_song_id(h5)
+get_title(h5)
+get_artist_name(h5)
+get_artist_terms(h5)
+get_artist_location(h5)
+get_danceability(h5)
+get_tempo(h5)
+get_year(h5)
 ```
 Below is an example of the output:
 ```
@@ -40,7 +41,6 @@ get_artist_mbid(h5)
 get_artist_playmeid(h5)
 get_artist_7digitalid(h5)
 get_release_7digitalid(h5)
-get_song_id(h5)
 get_track_7digitalid(h5)
 get_audio_md5(h5)
 get_key(h5)

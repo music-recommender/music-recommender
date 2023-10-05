@@ -1,12 +1,13 @@
 import os
 import pandas as pd
 import hdf5_getters as g
+import numpy as np
 
 # Real
 # MSD_ROOT = "/home/taleiko/Documents/Introduction to data science/Mini-project/MillionSongSubset"
 # Subfolder for testing
 MSD_ROOT = "/home/taleiko/Documents/Introduction to data science/Mini-project/MillionSongSubset/B/I"
-OUTPUT_FILE = "data/song_info.csv"
+# OUTPUT_FILE = "data/song_info.csv"
 OUTPUT_FILE = "data/song_info_test.csv"
 
 files = []
@@ -32,8 +33,10 @@ def createSongInfoCsv(filePaths):
             # How do we use the terms as a feature?
             # Are they consistent or improvised for each song?
             # If improvised, then they are just useless noise.
-            # g.get_artist_terms(h5),
+            np.array([term.decode() for term in g.get_artist_terms(h5)]),
             g.get_artist_location(h5).decode(),
+            g.get_artist_latitude(h5),
+            g.get_artist_longitude(h5),
             # Meaning unclear
             # g.get_danceability(h5),
             g.get_tempo(h5),
@@ -46,15 +49,15 @@ def createSongInfoCsv(filePaths):
     df = pd.DataFrame(rows, columns=["song_id",
                                      "title",
                                      "artist_name",
-                                    #  "artist_terms",
+                                     "artist_terms",
                                      "location",
+                                     "lat",
+                                     "lon",
                                     #  "danceability",
                                      "tempo",
                                      "year"
                                     ])
     # print(df)
-    for c in ["song_id", "title", "artist_name", "location"]:
-        df[c] = df[c].str.strip("b'")
     df.to_csv(OUTPUT_FILE, index=False)
 
 
