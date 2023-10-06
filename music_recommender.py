@@ -48,15 +48,15 @@ def recommendSongs(song_id, songs=loadSongs()):
 
 
 # Verifying results with Thisismyjam
-# dfJamMsd = pd.read_csv(JAM_MSD_FILE, sep="\t", names=["jam_id", "msd_id"])
-# print(dfJamMsd)
+# dfJam_msd = pd.read_csv(JAM_MSD_FILE, sep="\t", names=["jam_id", "msd_id"])
+# print(dfJam_msd)
 # # jamToMsd = {row["jam_id"]: row["msd_id"] for row in df.iloc}
 
-# dfLikes = pd.read_csv(LIKES_FILE, sep="\t")
-# print(dfLikes)
-# sortedLikes = dfLikes.sort_values("jam_id")
-# print(sortedLikes)
-# likesGroups = dfLikes.groupby("user_id")
+# df_likes = pd.read_csv(LIKES_FILE, sep="\t")
+# print(df_likes)
+# sorted_likes = df_likes.sort_values("jam_id")
+# print(sorted_likes)
+# likes_groups = df_likes.groupby("user_id")
 
 if __name__ == "__main__":
     sys.exit(main())
