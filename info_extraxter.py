@@ -4,9 +4,9 @@ import hdf5_getters as g
 import numpy as np
 
 # Real
-# MSD_ROOT = "/home/taleiko/Documents/Introduction to data science/Mini-project/MillionSongSubset"
+MSD_ROOT = "/home/taleiko/Documents/Introduction to data science/Mini-project/MillionSongSubset"
 # Subfolder for testing
-MSD_ROOT = "/home/taleiko/Documents/Introduction to data science/Mini-project/MillionSongSubset/B/I"
+# MSD_ROOT = "/home/taleiko/Documents/Introduction to data science/Mini-project/MillionSongSubset/B/I"
 # OUTPUT_FILE = "data/song_info.csv"
 # OUTPUT_FILE = "data/song_info_test.csv"
 OUTPUT_FILE = "data/song_info_complete_rows.csv"
@@ -59,8 +59,17 @@ def createSongInfoCsv(file_paths):
                                      "year"
                                     ])
     # print(df)
+    # df = processGenreColumn(df)
     df = df.dropna()
+    df = removeYear0(df)
     df.to_csv(OUTPUT_FILE, index=False)
+
+def removeYear0(df):
+    return df[df.year != 0]
+
+def processGenreColumn(df):
+    # TODO
+    pass
 
 
 createFileList(MSD_ROOT)
