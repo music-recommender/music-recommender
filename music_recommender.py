@@ -17,10 +17,37 @@
 LIKES_FILE = "data/likes.tsv"
 JAM_MSD_FILE = "data/jam_to_msd.tsv"
 # SONGS_FILE = "data/song_info.csv"
-SONGS_FILE = "data/song_info_test.csv"
+# SONGS_FILE = "data/song_info_test.csv"
+SONGS_FILE = "data/song_info_complete_rows.csv"
 
+import sys
 import pandas as pd
+# from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neighbors import NearestNeighbors
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
 
+def main():
+    recommendSongs(0)
+
+def loadSongs(file_path=SONGS_FILE):
+    songs = pd.read_csv(file_path)
+    for val in ["location"]:
+        songs[val] = songs[val].astype("category")
+    cat_columns = songs.select_dtypes(["category"]).columns
+    songs[cat_columns] = songs[cat_columns].apply(lambda x: x.cat.codes)
+    return songs
+
+def recommendSongs(song_id, songs=loadSongs()):
+    song = songs.iloc[song_id]
+    songSamples = [[song["lat"], song["lon"], song["tempo"], song["year"]] for song in songs.iloc]
+    song_input = [song["lat"], song["lon"], song["tempo"], song["year"]]
+    nn = NearestNeighbors(n_neighbors=1)
+    nn.fit(songSamples)
+    print(nn.kneighbors([song_input], 5, return_distance=False))
+
+
+# Verifying results with Thisismyjam
 # dfJamMsd = pd.read_csv(JAM_MSD_FILE, sep="\t", names=["jam_id", "msd_id"])
 # print(dfJamMsd)
 # # jamToMsd = {row["jam_id"]: row["msd_id"] for row in df.iloc}
@@ -31,34 +58,5 @@ import pandas as pd
 # print(sortedLikes)
 # likesGroups = dfLikes.groupby("user_id")
 
-# Loading songs
-songs = pd.read_csv(SONGS_FILE)
-print(songs)
-
-# Convert string values into categorical values
-for val in ["location"]:
-    songs[val] = songs[val].astype("category")
-
-cat_columns = songs.select_dtypes(["category"]).columns
-songs[cat_columns] = songs[cat_columns].apply(lambda x: x.cat.codes)
-print(songs)
-
-# Machine learning
-
-# from sklearn.neighbors import KNeighborsClassifier
-from sklearn.neighbors import NearestNeighbors
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
-
-songSamples = [[song["lat"], song["lon"], song["tempo"], song["year"]] for song in songs.iloc]
-print(songSamples)
-
-# samples = [[0, 0, 2], [1, 0, 0], [0, 0, 1]]
-# neigh = NearestNeighbors(n_neighbors=2, radius=0.4)
-# neigh.fit(samples)
-
-# print(neigh.kneighbors([[0, 0, 1.3]], 2, return_distance=False))
-# nbrs = neigh.radius_neighbors(
-#     [[0, 0, 1.3]], 0.4, return_distance=False
-# )
-
+if __name__ == "__main__":
+    sys.exit(main())

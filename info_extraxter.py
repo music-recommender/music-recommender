@@ -8,7 +8,8 @@ import numpy as np
 # Subfolder for testing
 MSD_ROOT = "/home/taleiko/Documents/Introduction to data science/Mini-project/MillionSongSubset/B/I"
 # OUTPUT_FILE = "data/song_info.csv"
-OUTPUT_FILE = "data/song_info_test.csv"
+# OUTPUT_FILE = "data/song_info_test.csv"
+OUTPUT_FILE = "data/song_info_complete_rows.csv"
 
 files = []
 
@@ -58,9 +59,8 @@ def createSongInfoCsv(filePaths):
                                      "year"
                                     ])
     # print(df)
+    df = df.dropna()
     df.to_csv(OUTPUT_FILE, index=False)
-
-
 
 
 createFileList(MSD_ROOT)
