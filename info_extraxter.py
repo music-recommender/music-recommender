@@ -16,17 +16,17 @@ files = []
 def createFileList(dir=MSD_ROOT):
     for path in os.listdir(dir):
         # print(path)
-        dirPath = "/".join([dir, path])
-        if os.path.isdir(dirPath):
-            createFileList(dirPath)
+        dir_path = "/".join([dir, path])
+        if os.path.isdir(dir_path):
+            createFileList(dir_path)
         else:
             global files
-            files.append(dirPath)
+            files.append(dir_path)
 
-def createSongInfoCsv(filePaths):
+def createSongInfoCsv(file_paths):
     rows = []
-    for filePath in filePaths:
-        h5 = g.open_h5_file_read(filePath)
+    for file_path in file_paths:
+        h5 = g.open_h5_file_read(file_path)
         row = [
             g.get_song_id(h5).decode(),
             g.get_title(h5).decode(),
