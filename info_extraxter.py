@@ -1,30 +1,32 @@
 import os
 import pandas as pd
 import hdf5_getters as g
+import numpy as np
 
 # Real
-# MSD_ROOT = "/home/taleiko/Documents/Introduction to data science/Mini-project/MillionSongSubset"
+MSD_ROOT = "/home/taleiko/Documents/Introduction to data science/Mini-project/MillionSongSubset"
 # Subfolder for testing
-MSD_ROOT = "/home/taleiko/Documents/Introduction to data science/Mini-project/MillionSongSubset/B/I"
-OUTPUT_FILE = "data/song_info.csv"
-OUTPUT_FILE = "data/song_info_test.csv"
+# MSD_ROOT = "/home/taleiko/Documents/Introduction to data science/Mini-project/MillionSongSubset/B/I"
+# OUTPUT_FILE = "data/song_info.csv"
+# OUTPUT_FILE = "data/song_info_test.csv"
+OUTPUT_FILE = "data/song_info_complete_rows.csv"
 
 files = []
 
 def createFileList(dir=MSD_ROOT):
     for path in os.listdir(dir):
         # print(path)
-        dirPath = "/".join([dir, path])
-        if os.path.isdir(dirPath):
-            createFileList(dirPath)
+        dir_path = "/".join([dir, path])
+        if os.path.isdir(dir_path):
+            createFileList(dir_path)
         else:
             global files
-            files.append(dirPath)
+            files.append(dir_path)
 
-def createSongInfoCsv(filePaths):
+def createSongInfoCsv(file_paths):
     rows = []
-    for filePath in filePaths:
-        h5 = g.open_h5_file_read(filePath)
+    for file_path in file_paths:
+        h5 = g.open_h5_file_read(file_path)
         row = [
             g.get_song_id(h5).decode(),
             g.get_title(h5).decode(),
@@ -32,8 +34,10 @@ def createSongInfoCsv(filePaths):
             # How do we use the terms as a feature?
             # Are they consistent or improvised for each song?
             # If improvised, then they are just useless noise.
-            # g.get_artist_terms(h5),
+            np.array([term.decode() for term in g.get_artist_terms(h5)]),
             g.get_artist_location(h5).decode(),
+            g.get_artist_latitude(h5),
+            g.get_artist_longitude(h5),
             # Meaning unclear
             # g.get_danceability(h5),
             g.get_tempo(h5),
@@ -46,18 +50,26 @@ def createSongInfoCsv(filePaths):
     df = pd.DataFrame(rows, columns=["song_id",
                                      "title",
                                      "artist_name",
-                                    #  "artist_terms",
+                                     "artist_terms",
                                      "location",
+                                     "lat",
+                                     "lon",
                                     #  "danceability",
                                      "tempo",
                                      "year"
                                     ])
     # print(df)
-    for c in ["song_id", "title", "artist_name", "location"]:
-        df[c] = df[c].str.strip("b'")
+    # df = processGenreColumn(df)
+    df = df.dropna()
+    df = removeYear0(df)
     df.to_csv(OUTPUT_FILE, index=False)
 
+def removeYear0(df):
+    return df[df.year != 0]
 
+def processGenreColumn(df):
+    # TODO
+    pass
 
 
 createFileList(MSD_ROOT)
