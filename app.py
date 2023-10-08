@@ -1,9 +1,10 @@
 import panel as pn
 import pandas as pd
+from music_recommender import recommendSongs
 
 pn.extension("tabulator")
 
-INPUT_FILE = "data/song_info.csv"
+INPUT_FILE = "data/song_info_complete_rows.csv"
 
 filters = {
     "title": {
@@ -51,8 +52,7 @@ tab = pn.widgets.Tabulator(
     sizing_mode="stretch_width",
     header_filters=filters,
     disabled=True,
-    selectable='checkbox',
-    frozen_rows=[]
+    selectable='toggle'
 )
 
 output_column = pn.Column()
@@ -72,6 +72,8 @@ def reset(r):
 
 @pn.depends(b=run_button, watch=True)
 def run(b):
+    output_column.append(tab.value.iloc[recommendSongs(tab.selection[0])[0]])
+
     return output_column
 
 template = pn.template.VanillaTemplate(title="Music Recommender", sidebar=[])

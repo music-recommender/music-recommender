@@ -44,7 +44,7 @@ def recommendSongs(song_id, songs=loadSongs()):
     song_input = [song["lat"], song["lon"], song["tempo"], song["year"]]
     nn = NearestNeighbors(n_neighbors=1)
     nn.fit(songSamples)
-    print(nn.kneighbors([song_input], 5, return_distance=False))
+    return nn.kneighbors([song_input], 5, return_distance=False)
 
 
 # Verifying results with Thisismyjam
