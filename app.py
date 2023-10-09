@@ -40,23 +40,33 @@ tab = pn.widgets.Tabulator(
     formatters=formatters
 )
 
+k_input = pn.widgets.IntInput(value=5, start=1, step=1, end=msd_df.shape[0], width=100)
 
-@pn.depends(s=tab.param.selection)
-def output(s):
-    if len(s) == 1:
-        return pn.Column(
-            "# Recommendations",
-            pn.widgets.Tabulator(
-                tab.value.iloc[recommendSongs(s[0])[0]],
-                sizing_mode="stretch_width",
+@pn.depends(s=tab.param.selection, k=k_input)
+def output(s, k):
+    if len(s) == 0:
+        return "### Please select a song."
+    elif len(s) == 1:
+        return pn.widgets.Tabulator(
+                tab.value.iloc[recommendSongs(s[0], k)[0]],
+                pagination="local",
                 layout="fit_columns",
+                page_size=10,
+                sizing_mode="stretch_width",
                 disabled=True,
-            ),
-        )
+                formatters=formatters
+            )
     else:
         return
 
 
 template = pn.template.VanillaTemplate(title="Music Recommender", sidebar=[])
-template.main.append(pn.Column("# Songs", tab, output))
+template.main.append(
+    pn.Column(
+        "# Songs",
+        tab,
+        "# Recommendations",
+        k_input,
+        output,
+        align=("center")))
 template.servable()

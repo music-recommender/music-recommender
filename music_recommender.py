@@ -38,13 +38,13 @@ def loadSongs(file_path=SONGS_FILE):
     songs[cat_columns] = songs[cat_columns].apply(lambda x: x.cat.codes)
     return songs
 
-def recommendSongs(song_id, songs=loadSongs()):
+def recommendSongs(song_id, k, songs=loadSongs()):
     song = songs.iloc[song_id]
     songSamples = [[song["lat"], song["lon"], song["tempo"], song["year"]] for song in songs.iloc]
     song_input = [song["lat"], song["lon"], song["tempo"], song["year"]]
     nn = NearestNeighbors(n_neighbors=1)
     nn.fit(songSamples)
-    return nn.kneighbors([song_input], 5, return_distance=False)
+    return nn.kneighbors([song_input], k, return_distance=False)
 
 
 # Verifying results with Thisismyjam
