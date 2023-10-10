@@ -59,18 +59,17 @@ def createSongInfoCsv(file_paths):
                                      "year"
                                     ])
     # print(df)
-    # df = processGenreColumn(df)
     df = df.dropna()
     df = removeYear0(df)
+    df = processGenreColumn(df)
     df.to_csv(OUTPUT_FILE, index=False)
 
 def removeYear0(df):
     return df[df.year != 0]
 
 def processGenreColumn(df):
-    # TODO
-    pass
-
+    df.artist_terms = df.artist_terms.apply(lambda x: sorted(x.tolist()))
+    return df
 
 createFileList(MSD_ROOT)
 createSongInfoCsv(files)
