@@ -28,7 +28,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
 def main():
-    recommendSongs(0)
+    print(recommendSongs(0))
 
 def loadSongs(file_path=SONGS_FILE):
     songs = pd.read_csv(file_path)
@@ -40,10 +40,10 @@ def loadSongs(file_path=SONGS_FILE):
 
 def recommendSongs(song_id, songs=loadSongs()):
     song = songs.iloc[song_id]
-    songSamples = [[song["lat"], song["lon"], song["tempo"], song["year"]] for song in songs.iloc]
-    song_input = [song["lat"], song["lon"], song["tempo"], song["year"]]
+    song_samples = [[song["lat"], song["lon"], song["tempo"], song["year"], song["artist_terms_label"]] for song in songs.iloc]
+    song_input = [song["lat"], song["lon"], song["tempo"], song["year"], song["artist_terms_label"]]
     nn = NearestNeighbors(n_neighbors=1)
-    nn.fit(songSamples)
+    nn.fit(song_samples)
     return nn.kneighbors([song_input], 5, return_distance=False)
 
 

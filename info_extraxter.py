@@ -2,6 +2,7 @@ import os
 import pandas as pd
 import hdf5_getters as g
 import numpy as np
+import math
 
 # Real
 MSD_ROOT = "/home/taleiko/Documents/Introduction to data science/Mini-project/MillionSongSubset"
@@ -59,17 +60,43 @@ def createSongInfoCsv(file_paths):
                                      "year"
                                     ])
     # print(df)
-    # df = processGenreColumn(df)
     df = df.dropna()
+    df = processGenreColumn(df)
     df = removeYear0(df)
+    # print(df)
     df.to_csv(OUTPUT_FILE, index=False)
 
 def removeYear0(df):
     return df[df.year != 0]
 
 def processGenreColumn(df):
-    # TODO
-    pass
+    genre_labels = createGenreLabels()
+    col = df["artist_terms"]
+    scores = np.zeros(len(col), dtype=int)
+    for i in range(len(col)):
+        score = 0
+        n_scores = 0
+        for term in col[i]:
+            for keyword in genre_labels.keys():
+                if keyword in term:
+                    score += genre_labels[keyword]
+                    n_scores += 1
+        if n_scores == 0:
+            scores[i] = -1
+        else:
+            scores[i] = math.floor(score / n_scores)
+    df["artist_terms_label"] = scores
+    return df
+
+def createGenreLabels():
+    genres = ["classic", "soul", "blues", "country", "jazz", "pop", "hip hop", "disco", "techno", "rock", "metal"]
+    # tango?
+    genre_scores = {}
+    score = 0
+    for genre in genres:
+        genre_scores[genre] = score
+        score += 1
+    return genre_scores
 
 
 createFileList(MSD_ROOT)
