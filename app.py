@@ -1,7 +1,7 @@
 import panel as pn
 import pandas as pd
 from bokeh.models.widgets.tables import NumberFormatter
-from music_recommender import recommendSongs
+from music_recommender import recommendSongs, loadSongs
 
 pn.extension("tabulator")
 
@@ -48,7 +48,7 @@ def output(s, k):
         return "### Please select a song."
     elif len(s) == 1:
         return pn.widgets.Tabulator(
-                tab.value.iloc[recommendSongs(s[0], k)[0]],
+                tab.value.iloc[recommendSongs(s[0], k)[0][1:]],
                 pagination="local",
                 layout="fit_columns",
                 page_size=10,
