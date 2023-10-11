@@ -24,6 +24,7 @@ import sys
 import pandas as pd
 # from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neighbors import NearestNeighbors
+from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
@@ -39,12 +40,16 @@ def loadSongs(file_path=SONGS_FILE):
     return songs
 
 def recommendSongs(song_id, k=5, songs=loadSongs()):
-    song = songs.iloc[song_id]
-    song_samples = [[song["lat"], song["lon"], song["tempo"], song["year"], song["artist_terms_label"]] for song in songs.iloc]
-    song_input = [song["lat"], song["lon"], song["tempo"], song["year"], song["artist_terms_label"]]
+    cols = ["lat", "lon", "tempo", "year", "artist_terms_label"]
+    songs = pd.DataFrame(
+        StandardScaler().fit_transform(songs[cols].values),
+        columns=cols,
+        index=songs.index,
+    )
     nn = NearestNeighbors(n_neighbors=1)
-    nn.fit(song_samples)
-    return nn.kneighbors([song_input], k + 1, return_distance=False)
+    nn.fit(songs.values.tolist())
+    return nn.kneighbors(
+        [songs.iloc[song_id].tolist()], k + 1, return_distance=False)
 
 
 # Verifying results with Thisismyjam

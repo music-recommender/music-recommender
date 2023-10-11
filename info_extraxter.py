@@ -77,7 +77,7 @@ def processGenreColumn(df):
     for i in range(len(col)):
         score = 0
         n_scores = 0
-        for term in col[i]:
+        for term in col.iloc[i]:
             for keyword in genre_labels.keys():
                 if keyword in term:
                     score += genre_labels[keyword]
