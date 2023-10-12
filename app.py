@@ -41,18 +41,18 @@ tab = pn.widgets.Tabulator(
 )
 
 k_input = pn.widgets.IntInput(value=5, start=1, step=1, end=msd_df.shape[0], width=100)
-toggle_group = pn.widgets.ToggleGroup(options=["year", "tempo", "lat", "lon", "artist_terms_matches"], value=["year", "tempo", "lat", "lon", "artist_terms_matches"])
+cols = ["year", "tempo", "lat", "lon", "artist_terms_matches"]
+checkbox_group = pn.widgets.CheckBoxGroup(options=cols, value=cols)
 
-@pn.depends(s=tab.param.selection, k=k_input, tg=toggle_group)
-def output(s, k, tg):
-    print(tg)
+@pn.depends(s=tab.param.selection, k=k_input, cbg=checkbox_group)
+def output(s, k, cbg):
     if len(s) == 0:
         return "### Please select a song."
-    elif not tg:
+    elif not cbg:
         return "### Please select at least one column used for prediction."
     elif len(s) == 1:
         return pn.widgets.Tabulator(
-            recommendSongs(s[0], k, tg, msd_df),
+            recommendSongs(s[0], k, cbg, msd_df),
             pagination="local",
             layout="fit_columns",
             page_size=10,
@@ -64,13 +64,23 @@ def output(s, k, tg):
         return
 
 
-template = pn.template.VanillaTemplate(title="Music Recommender", sidebar=[])
+template = pn.template.VanillaTemplate(
+    title="Music Recommender",
+    sidebar=[
+        "## Settings",
+        pn.layout.Divider(),
+        "### Number of recommendations",
+        k_input,
+        "### Include in recommendation",
+        checkbox_group
+    ],
+    sidebar_width = 240
+)
 template.main.append(
     pn.Column(
         "# Songs",
         tab,
         "# Recommendations",
-        pn.Row(k_input, toggle_group),
         output)
 )
 template.servable()
