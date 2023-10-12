@@ -22,23 +22,56 @@ SONGS_FILE = "data/song_info_complete_rows.csv"
 
 import sys
 import pandas as pd
+
 # from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neighbors import NearestNeighbors
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
+
 def main():
     print(recommendSongs(0))
 
+
+"""
 def loadSongs(file_path=SONGS_FILE):
-    songs = pd.read_csv(file_path)
+    songs = pd.read_csv(file_path, converters={"artist_terms": lambda x: x.split(",")})
     for val in ["location"]:
         songs[val] = songs[val].astype("category")
     cat_columns = songs.select_dtypes(["category"]).columns
     songs[cat_columns] = songs[cat_columns].apply(lambda x: x.cat.codes)
     return songs
+"""
 
+
+def count_similar_artist_terms(song_ats, other_ats):
+    c = 0
+    for at in song_ats:
+        if at in other_ats:
+            c += 1
+    return c
+
+
+def recommendSongs(song_id, k, songs):
+    songs["artist_terms_matches"] = songs.artist_terms.apply(
+        lambda x: count_similar_artist_terms(songs.iloc[song_id].artist_terms, x)
+    )
+    songs_copy = songs.copy()
+    cols = ["year", "tempo", "lat", "lon", "artist_terms_matches"]
+    songs = pd.DataFrame(
+        StandardScaler().fit_transform(songs[cols].values),
+        columns=cols,
+        index=songs.index,
+    )
+    song_samples = songs.values.tolist()
+    nn = NearestNeighbors(n_neighbors=1)
+    nn.fit(song_samples)
+    v = nn.kneighbors([songs.iloc[song_id].tolist()], k + 1, return_distance=False)
+    return songs_copy.iloc[v[0][1:]]
+
+
+"""
 def recommendSongs(song_id, k=5, songs=loadSongs()):
     cols = ["lat", "lon", "tempo", "year", "artist_terms_label"]
     songs = pd.DataFrame(
@@ -50,8 +83,7 @@ def recommendSongs(song_id, k=5, songs=loadSongs()):
     nn.fit(songs.values.tolist())
     return nn.kneighbors(
         [songs.iloc[song_id].tolist()], k + 1, return_distance=False)
-
-
+"""
 # Verifying results with Thisismyjam
 # dfJam_msd = pd.read_csv(JAM_MSD_FILE, sep="\t", names=["jam_id", "msd_id"])
 # print(dfJam_msd)

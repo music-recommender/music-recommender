@@ -71,6 +71,10 @@ def removeYear0(df):
 
 def processGenreColumn(df):
     df.artist_terms = df.artist_terms.apply(lambda x: sorted(x.tolist()))
+    return df
+"""
+def processGenreColumn(df):
+    df.artist_terms = df.artist_terms.apply(lambda x: sorted(x.tolist()))
     genre_labels = createGenreLabels()
     col = df["artist_terms"]
     scores = np.zeros(len(col), dtype=int)
@@ -98,7 +102,7 @@ def createGenreLabels():
         genre_scores[genre] = score
         score += 1
     return genre_scores
-
+"""
 createFileList(MSD_ROOT)
 createSongInfoCsv(files)
 
