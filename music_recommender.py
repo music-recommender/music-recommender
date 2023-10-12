@@ -53,12 +53,11 @@ def count_similar_artist_terms(song_ats, other_ats):
     return c
 
 
-def recommendSongs(song_id, k, songs):
+def recommendSongs(song_id, k, cols, songs):
     songs["artist_terms_matches"] = songs.artist_terms.apply(
         lambda x: count_similar_artist_terms(songs.iloc[song_id].artist_terms, x)
     )
     songs_copy = songs.copy()
-    cols = ["year", "tempo", "lat", "lon", "artist_terms_matches"]
     songs = pd.DataFrame(
         StandardScaler().fit_transform(songs[cols].values),
         columns=cols,
