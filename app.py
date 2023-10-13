@@ -2,23 +2,12 @@ import panel as pn
 import pandas as pd
 from bokeh.models.widgets.tables import NumberFormatter
 from music_recommender import recommendSongs
+from tabulator_filters import filters
 
 pn.extension("tabulator")
 
 INPUT_FILE = "data/song_info_complete_rows.csv"
 
-filters = {
-    "index": {"type": "number", "func": ">=", "placeholder": "Enter index (min)"},
-    "song_id": {"type": "input", "func": "like", "placeholder": "Enter song id"},
-    "title": {"type": "input", "func": "like", "placeholder": "Enter title"},
-    "artist_name": {"type": "input", "func": "like", "placeholder": "Enter artist"},
-    "artist_terms": {"type": "input", "func": "like", "placeholder": "Enter terms"},
-    "location": {"type": "input", "func": "like", "placeholder": "Enter location"},
-    "lat": {"type": "number", "func": ">=", "placeholder": "Enter latitude (min)"},
-    "lon": {"type": "number", "func": ">=", "placeholder": "Enter longitude (min)"},
-    "tempo": {"type": "number", "func": ">=", "placeholder": "Enter tempo (min)"},
-    "year": {"type": "number", "func": ">=", "placeholder": "Enter year (min)"},
-}
 formatters = {
     "index": NumberFormatter(format="0"),
     "lat": NumberFormatter(format="0.00000"),
@@ -27,7 +16,13 @@ formatters = {
     "year": NumberFormatter(format="0"),
 }
 
-msd_df = pd.read_csv(INPUT_FILE, converters={"artist_terms": lambda x: x.split(",")})
+msd_df = pd.read_csv(
+    INPUT_FILE,
+    converters={
+        "artist_terms": lambda x: x.split(",")
+    }
+)
+
 tab = pn.widgets.Tabulator(
     msd_df,
     pagination="local",
@@ -40,7 +35,9 @@ tab = pn.widgets.Tabulator(
     formatters=formatters,
 )
 
-k_input = pn.widgets.IntInput(value=5, start=1, step=1, end=msd_df.shape[0], width=100)
+k_input = pn.widgets.IntInput(
+    value=5, start=1, step=1, end=msd_df.shape[0], width=100
+)
 cols = ["year", "tempo", "lat", "lon", "artist_terms_matches"]
 checkbox_group = pn.widgets.CheckBoxGroup(options=cols, value=cols)
 
@@ -76,6 +73,7 @@ template = pn.template.VanillaTemplate(
     ],
     sidebar_width = 240
 )
+
 template.main.append(
     pn.Column(
         "# Songs",
@@ -83,4 +81,5 @@ template.main.append(
         "# Recommendations",
         output)
 )
+
 template.servable()
