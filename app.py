@@ -47,9 +47,9 @@ def output(s, k, cbg):
         return "### Please select a song."
     elif not cbg:
         return "### Please select at least one column used for prediction."
-    elif len(s) == 1:
+    else:
         return pn.widgets.Tabulator(
-            recommendSongs(s[0], k, cbg, msd_df),
+            recommendSongs(s, k, cbg, msd_df),
             pagination="local",
             layout="fit_columns",
             page_size=10,
@@ -57,8 +57,6 @@ def output(s, k, cbg):
             disabled=True,
             formatters=formatters,
         )
-    else:
-        return
 
 
 template = pn.template.VanillaTemplate(

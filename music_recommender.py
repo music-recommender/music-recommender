@@ -28,7 +28,8 @@ def count_similar_artist_terms(song_ats, other_ats):
     return c
 
 
-def recommendSongs(song_id, k, cols, songs):
+def recommendSongs(selection, k, cols, songs):
+    song_id = selection[0]
     songs["artist_terms_matches"] = songs.artist_terms.apply(
         lambda x: count_similar_artist_terms(
             songs.iloc[song_id].artist_terms, x
