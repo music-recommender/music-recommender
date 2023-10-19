@@ -1,2 +1,7 @@
 .env
+data/jam_to_msd.tsv
+data/likes.tsv
+data/song_info_test.csv
+data/song_info.csv
+test.py
 __pycache__/

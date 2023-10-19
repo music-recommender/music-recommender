@@ -132,8 +132,9 @@ def output(s, k, cbg):
     elif not cbg:
         return "### Please select at least one column used for prediction."
     else:
-        return pn.widgets.Tabulator(
-            recommendSongs(s, k, cbg, msd_df),
+        recommend_df = recommendSongs(s, k, cbg, msd_df)
+        recommend_tab = pn.widgets.Tabulator(
+            recommend_df,
             pagination="local",
             layout="fit_columns",
             page_size=10,
@@ -141,6 +142,10 @@ def output(s, k, cbg):
             disabled=True,
             formatters=formatters,
         )
+        
+        jam_results = None # Vector
+
+        return pn.Column(recommend_tab, jam_results)
 
 
 template = pn.template.VanillaTemplate(

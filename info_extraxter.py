@@ -35,10 +35,10 @@ def createSongInfoCsv(file_paths):
             g.get_artist_location(h5).decode(),
             g.get_artist_latitude(h5),
             g.get_artist_longitude(h5),
-            g.get_tempo(h5),
+            round(g.get_tempo(h5)),
             # Does not always exist, 0 in that case.
             # Can we get around this?
-            g.get_year(h5),
+            g.get_year(h5)
         ]
         h5.close()
         rows.append(row)
