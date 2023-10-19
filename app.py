@@ -15,7 +15,7 @@ formatters = {
 }
 
 msd_df = pd.read_csv(
-    "https://github.com/music-recommender/music-recommender/tree/main/data/song_info_complete_rows.csv",
+    "https://raw.githubusercontent.com/music-recommender/music-recommender/main/data/song_info_complete_rows.csv",
     converters={
         "artist_terms": lambda x: x.split(",")
     }
