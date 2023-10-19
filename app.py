@@ -6,8 +6,6 @@ from sklearn.preprocessing import StandardScaler
 
 pn.extension("tabulator")
 
-INPUT_FILE = "data/song_info_complete_rows.csv"
-
 formatters = {
     "index": NumberFormatter(format="0"),
     "lat": NumberFormatter(format="0.00000"),
@@ -17,7 +15,7 @@ formatters = {
 }
 
 msd_df = pd.read_csv(
-    INPUT_FILE,
+    "https://github.com/music-recommender/music-recommender/tree/main/data/song_info_complete_rows.csv",
     converters={
         "artist_terms": lambda x: x.split(",")
     }
