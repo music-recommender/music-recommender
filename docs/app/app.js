@@ -15,7 +15,7 @@ async function startApplication() {
   self.pyodide.globals.set("sendPatch", sendPatch);
   console.log("Loaded!");
   await self.pyodide.loadPackage("micropip");
-  const env_spec = ['https://cdn.holoviz.org/panel/1.2.3/dist/wheels/bokeh-3.2.2-py3-none-any.whl', 'https://cdn.holoviz.org/panel/1.2.3/dist/wheels/panel-1.2.3-py3-none-any.whl', 'pyodide-http==0.2.1', 'bleach==6.1.0', 'bokeh==3.2.2', 'certifi==2023.7.22', 'charset-normalizer==3.3.0', 'contourpy==1.1.1', 'idna==3.4', 'Jinja2==3.1.2', 'joblib==1.3.2', 'linkify-it-py==2.0.2', 'Markdown==3.5', 'markdown-it-py==3.0.0', 'MarkupSafe==2.1.3', 'mdit-py-plugins==0.4.0', 'mdurl==0.1.2', 'numpy==1.26.1', 'packaging==23.2', 'pandas==2.1.1', 'panel==1.2.3', 'param==1.13.0', 'Pillow==10.1.0', 'python-dateutil==2.8.2', 'pytz==2023.3.post1', 'pyviz_comms==3.0.0', 'PyYAML==6.0.1', 'requests==2.31.0', 'scikit-learn==1.3.1', 'scipy==1.11.3', 'six==1.16.0', 'threadpoolctl==3.2.0', 'tornado==6.3.3', 'tqdm==4.66.1', 'typing_extensions==4.8.0', 'tzdata==2023.3', 'uc-micro-py==1.0.2', 'urllib3==2.0.7', 'webencodings==0.5.1', 'xyzservices==2023.10.0']
+  const env_spec = ['https://cdn.holoviz.org/panel/1.2.3/dist/wheels/bokeh-3.2.1-py3-none-any.whl', 'https://cdn.holoviz.org/panel/1.2.3/dist/wheels/panel-1.2.3-py3-none-any.whl', 'pyodide-http==0.2.1', 'bleach==6.1.0', 'bokeh==3.2.2', 'certifi==2023.7.22', 'charset-normalizer==3.3.0', 'contourpy==1.1.1', 'idna==3.4', 'Jinja2==3.1.2', 'joblib==1.3.2', 'linkify-it-py==2.0.2', 'Markdown==3.5', 'markdown-it-py==3.0.0', 'MarkupSafe==2.1.3', 'mdit-py-plugins==0.4.0', 'mdurl==0.1.2', 'numpy==1.26.1', 'packaging==23.2', 'pandas==2.1.1', 'panel==1.2.3', 'param==1.13.0', 'Pillow==10.1.0', 'python-dateutil==2.8.2', 'pytz==2023.3.post1', 'pyviz_comms==3.0.0', 'PyYAML==6.0.1', 'requests==2.31.0', 'scikit-learn==1.3.1', 'scipy==1.11.3', 'six==1.16.0', 'threadpoolctl==3.2.0', 'tornado==6.3.3', 'tqdm==4.66.1', 'typing_extensions==4.8.0', 'tzdata==2023.3', 'uc-micro-py==1.0.2', 'urllib3==2.0.7', 'webencodings==0.5.1', 'xyzservices==2023.10.0']
   for (const pkg of env_spec) {
     let pkg_name;
     if (pkg.endsWith('.whl')) {
@@ -50,8 +50,8 @@ init_doc()
 import panel as pn
 import pandas as pd
 from bokeh.models.widgets.tables import NumberFormatter
-from music_recommender import recommendSongs
-from tabulator_filters import filters
+from sklearn.neighbors import NearestNeighbors
+from sklearn.preprocessing import StandardScaler
 
 pn.extension("tabulator")
 
@@ -72,6 +72,59 @@ msd_df = pd.read_csv(
     }
 )
 
+filters = {
+    "index": {
+        "type": "number",
+        "func": ">=",
+        "placeholder": "Enter index (min)"
+    },
+    "song_id": {
+        "type": "input",
+        "func": "like",
+        "placeholder": "Enter song id"},
+    "title": {
+        "type": "input",
+        "func": "like",
+        "placeholder": "Enter title"
+    },
+    "artist_name": {
+        "type": "input",
+        "func": "like",
+        "placeholder": "Enter artist"
+    },
+    "artist_terms": {
+        "type": "input",
+        "func": "like",
+        "placeholder": "Enter terms"
+    },
+    "location": {
+        "type": "input",
+        "func": "like",
+        "placeholder": "Enter location"
+    },
+    "lat": {
+        "type": "number",
+        "func": ">=",
+        "placeholder": "Enter latitude (min)"
+    },
+    "lon": {
+        "type": "number",
+        "func": ">=",
+        "placeholder": "Enter longitude (min)"
+    },
+    "tempo": {
+        "type": "number",
+        "func": ">=",
+        "placeholder": "Enter tempo (min)"
+    },
+    "year": {
+        "type": "number",
+        "func": ">=",
+        "placeholder": "Enter year (min)"
+    },
+}
+
+
 tab = pn.widgets.Tabulator(
     msd_df,
     pagination="local",
@@ -89,6 +142,39 @@ k_input = pn.widgets.IntInput(
 )
 cols = ["year", "tempo", "lat", "lon", "artist_terms_matches"]
 checkbox_group = pn.widgets.CheckBoxGroup(options=cols, value=cols)
+
+def count_similar_artist_terms(song_ats, other_ats):
+    c = 0
+    for at in song_ats:
+        if at in other_ats:
+            c += 1
+    return c
+
+
+def recommendSongs(selection, k, cols, songs):
+    song_id = selection[0]
+    songs["artist_terms_matches"] = songs.artist_terms.apply(
+        lambda x: count_similar_artist_terms(
+            songs.iloc[song_id].artist_terms, x
+        )
+    )
+    songs_copy = songs.copy()
+    songs = pd.DataFrame(
+        StandardScaler().fit_transform(songs[cols].values),
+        columns=cols,
+        index=songs.index,
+    )
+    song_samples = songs.values.tolist()
+    nn = NearestNeighbors(n_neighbors=1)
+    nn.fit(song_samples)
+    v = nn.kneighbors(
+        [songs.iloc[song_id].tolist()],
+        k + 1,
+        return_distance=False
+    )
+
+    return songs_copy.iloc[v[0][1:]]
+
 
 @pn.depends(s=tab.param.selection, k=k_input, cbg=checkbox_group)
 def output(s, k, cbg):
