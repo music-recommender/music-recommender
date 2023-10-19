@@ -1,8 +1,8 @@
 import panel as pn
 import pandas as pd
 from bokeh.models.widgets.tables import NumberFormatter
-from music_recommender import recommendSongs
-from tabulator_filters import filters
+from sklearn.neighbors import NearestNeighbors
+from sklearn.preprocessing import StandardScaler
 
 pn.extension("tabulator")
 
@@ -23,6 +23,59 @@ msd_df = pd.read_csv(
     }
 )
 
+filters = {
+    "index": {
+        "type": "number",
+        "func": ">=",
+        "placeholder": "Enter index (min)"
+    },
+    "song_id": {
+        "type": "input",
+        "func": "like",
+        "placeholder": "Enter song id"},
+    "title": {
+        "type": "input",
+        "func": "like",
+        "placeholder": "Enter title"
+    },
+    "artist_name": {
+        "type": "input",
+        "func": "like",
+        "placeholder": "Enter artist"
+    },
+    "artist_terms": {
+        "type": "input",
+        "func": "like",
+        "placeholder": "Enter terms"
+    },
+    "location": {
+        "type": "input",
+        "func": "like",
+        "placeholder": "Enter location"
+    },
+    "lat": {
+        "type": "number",
+        "func": ">=",
+        "placeholder": "Enter latitude (min)"
+    },
+    "lon": {
+        "type": "number",
+        "func": ">=",
+        "placeholder": "Enter longitude (min)"
+    },
+    "tempo": {
+        "type": "number",
+        "func": ">=",
+        "placeholder": "Enter tempo (min)"
+    },
+    "year": {
+        "type": "number",
+        "func": ">=",
+        "placeholder": "Enter year (min)"
+    },
+}
+
+
 tab = pn.widgets.Tabulator(
     msd_df,
     pagination="local",
@@ -40,6 +93,39 @@ k_input = pn.widgets.IntInput(
 )
 cols = ["year", "tempo", "lat", "lon", "artist_terms_matches"]
 checkbox_group = pn.widgets.CheckBoxGroup(options=cols, value=cols)
+
+def count_similar_artist_terms(song_ats, other_ats):
+    c = 0
+    for at in song_ats:
+        if at in other_ats:
+            c += 1
+    return c
+
+
+def recommendSongs(selection, k, cols, songs):
+    song_id = selection[0]
+    songs["artist_terms_matches"] = songs.artist_terms.apply(
+        lambda x: count_similar_artist_terms(
+            songs.iloc[song_id].artist_terms, x
+        )
+    )
+    songs_copy = songs.copy()
+    songs = pd.DataFrame(
+        StandardScaler().fit_transform(songs[cols].values),
+        columns=cols,
+        index=songs.index,
+    )
+    song_samples = songs.values.tolist()
+    nn = NearestNeighbors(n_neighbors=1)
+    nn.fit(song_samples)
+    v = nn.kneighbors(
+        [songs.iloc[song_id].tolist()],
+        k + 1,
+        return_distance=False
+    )
+
+    return songs_copy.iloc[v[0][1:]]
+
 
 @pn.depends(s=tab.param.selection, k=k_input, cbg=checkbox_group)
 def output(s, k, cbg):
