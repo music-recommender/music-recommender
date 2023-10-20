@@ -3,6 +3,8 @@ import pandas as pd
 from bokeh.models.widgets.tables import NumberFormatter
 from sklearn.neighbors import NearestNeighbors
 from sklearn.preprocessing import StandardScaler
+import numpy as np
+import json
 
 pn.extension("tabulator")
 
@@ -124,6 +126,33 @@ def recommendSongs(selection, k, cols, songs):
 
     return songs_copy.iloc[v[0][1:]]
 
+def readEchoUserData():
+    with open("data/echo_user_data.json", "r") as f:
+        echo_user_data = json.load(f)
+    for user in echo_user_data.keys():
+        echo_user_data[user] = set(echo_user_data[user])
+    return echo_user_data
+
+def echoComparison(user_song_id, recommended_songs_df):
+    song_ids = np.array([
+        row["song_id"] for row in recommended_songs_df.iloc
+    ])
+    echo_listens = readEchoUserData()
+    users = list(echo_listens.keys())
+    scores = np.zeros(len(song_ids))
+    user_song_listeners = np.zeros(len(song_ids))
+
+    for i in range(len(song_ids)):
+        for user in users:
+            if user_song_id in echo_listens[user]:
+                if song_ids[i] in echo_listens[user]:
+                    scores[i] += 1
+                user_song_listeners[i] += 1
+
+    for i in range(len(scores)):
+        scores[i] = scores[i] / user_song_listeners[i]
+    return scores
+
 
 @pn.depends(s=tab.param.selection, k=k_input, cbg=checkbox_group)
 def output(s, k, cbg):
@@ -143,9 +172,9 @@ def output(s, k, cbg):
             formatters=formatters,
         )
         
-        jam_results = None # Vector
+        echo_results = echoComparison(s, recommend_df)
 
-        return pn.Column(recommend_tab, jam_results)
+        return pn.Column(recommend_tab, echo_results)
 
 
 template = pn.template.VanillaTemplate(

@@ -3,12 +3,10 @@ import pandas as pd
 import hdf5_getters as g
 import numpy as np
 
-
 MSD_ROOT = "/home/taleiko/Documents/Introduction to data science/Mini-project/MillionSongSubset"
-OUTPUT_FILE = "data/song_info_complete_rows.csv"
+OUTPUT_FILE = "data/song_info_all.csv"
 
 files = []
-
 
 def createFileList(dir=MSD_ROOT):
     for path in os.listdir(dir):
@@ -19,25 +17,20 @@ def createFileList(dir=MSD_ROOT):
             global files
             files.append(dir_path)
 
-
 def createSongInfoCsv(file_paths):
     rows = []
     for file_path in file_paths:
         h5 = g.open_h5_file_read(file_path)
         row = [
             g.get_song_id(h5).decode(),
+            g.get_track_id(h5).decode(),
             g.get_title(h5).decode(),
             g.get_artist_name(h5).decode(),
-            # How do we use the terms as a feature?
-            # Are they consistent or improvised for each song?
-            # If improvised, then they are just useless noise.
             np.array([term.decode() for term in g.get_artist_terms(h5)]),
             g.get_artist_location(h5).decode(),
             g.get_artist_latitude(h5),
             g.get_artist_longitude(h5),
             round(g.get_tempo(h5)),
-            # Does not always exist, 0 in that case.
-            # Can we get around this?
             g.get_year(h5)
         ]
         h5.close()
@@ -46,6 +39,7 @@ def createSongInfoCsv(file_paths):
         rows,
         columns=[
             "song_id",
+            "track_id",
             "title",
             "artist_name",
             "artist_terms",
@@ -56,7 +50,7 @@ def createSongInfoCsv(file_paths):
             "year",
         ],
     )
-    df = df.dropna()
+    # df = df.dropna()
     df = processGenreColumn(df)
     df = removeYear0(df)
     df.to_csv(OUTPUT_FILE, index=False)
