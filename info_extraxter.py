@@ -45,15 +45,15 @@ def createSongInfoCsv(file_paths):
     df = pd.DataFrame(
         rows,
         columns=[
-            "song_id",
-            "title",
-            "artist_name",
-            "artist_terms",
-            "location",
-            "lat",
-            "lon",
-            "tempo",
-            "year",
+            "ID",
+            "Title",
+            "Artist",
+            "Genres",
+            "Location",
+            "Latitude",
+            "Longitude",
+            "Tempo",
+            "Year",
         ],
     )
     df = df.dropna()
@@ -63,11 +63,11 @@ def createSongInfoCsv(file_paths):
 
 
 def removeYear0(df):
-    return df[df.year != 0]
+    return df[df.Year != 0]
 
 
 def processGenreColumn(df):
-    df.artist_terms = df.artist_terms.apply(lambda x: sorted(x.tolist()))
+    df.Genres = df.Genres.apply(lambda x: sorted(x.tolist()))
     return df
 
 
