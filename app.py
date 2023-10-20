@@ -8,93 +8,57 @@ import json
 
 pn.extension("tabulator")
 
-formatters = {
-    "index": NumberFormatter(format="0"),
-    "lat": NumberFormatter(format="0.00000"),
-    "lon": NumberFormatter(format="0.00000"),
-    "tempo": NumberFormatter(format="0.000"),
-    "year": NumberFormatter(format="0"),
-}
+all_columns = [
+    "index", "ID", "Title", "Artist", "Genres", "Location", "Latitude", "Longitude", "Tempo", "Year", "Overlapping genres"
+]
+hidden_columns=["index", "ID", "Latitude", "Longitude"]
+recom_cols = ["Year", "Tempo", "Latitude", "Longitude", "Overlapping genres"]
 
 msd_df = pd.read_csv(
     "https://raw.githubusercontent.com/music-recommender/music-recommender/main/data/song_info_complete_rows.csv",
     converters={
-        "artist_terms": lambda x: x.split(",")
+        "Genres": lambda x: x.split(",")
     }
 )
 
-filters = {
-    "index": {
-        "type": "number",
-        "func": ">=",
-        "placeholder": "Enter index (min)"
-    },
-    "song_id": {
-        "type": "input",
-        "func": "like",
-        "placeholder": "Enter song id"},
-    "title": {
-        "type": "input",
-        "func": "like",
-        "placeholder": "Enter title"
-    },
-    "artist_name": {
-        "type": "input",
-        "func": "like",
-        "placeholder": "Enter artist"
-    },
-    "artist_terms": {
-        "type": "input",
-        "func": "like",
-        "placeholder": "Enter terms"
-    },
-    "location": {
-        "type": "input",
-        "func": "like",
-        "placeholder": "Enter location"
-    },
-    "lat": {
-        "type": "number",
-        "func": ">=",
-        "placeholder": "Enter latitude (min)"
-    },
-    "lon": {
-        "type": "number",
-        "func": ">=",
-        "placeholder": "Enter longitude (min)"
-    },
-    "tempo": {
-        "type": "number",
-        "func": ">=",
-        "placeholder": "Enter tempo (min)"
-    },
-    "year": {
-        "type": "number",
-        "func": ">=",
-        "placeholder": "Enter year (min)"
-    },
-}
-
-
-tab = pn.widgets.Tabulator(
-    msd_df,
-    pagination="local",
-    layout="fit_columns",
-    page_size=10,
-    sizing_mode="stretch_width",
-    header_filters=filters,
-    disabled=True,
-    selectable="checkbox",
-    formatters=formatters,
+msd_df_all = pd.read_csv(
+    "https://raw.githubusercontent.com/music-recommender/music-recommender/main/data/song_info_all.csv",
+    converters={
+        "Genres": lambda x: x.split(",")
+    }
 )
 
+def create_tabulator(df, hc, sel_opt):
+    return pn.widgets.Tabulator(
+        df,
+        selectable=sel_opt,
+        hidden_columns=hc,
+        pagination="local",
+        layout="fit_columns",
+        page_size=10,
+        sizing_mode="stretch_width",
+        disabled=True,
+        formatters= {
+            "Tempo": NumberFormatter(format="0"),
+            "Year": NumberFormatter(format="0"),
+        }
+    )
+
+tab = create_tabulator(
+    msd_df, hc=hidden_columns, sel_opt="checkbox"
+)
 k_input = pn.widgets.IntInput(
     value=5, start=1, step=1, end=msd_df.shape[0], width=100
 )
-cols = ["year", "tempo", "lat", "lon", "artist_terms_matches"]
-checkbox_group = pn.widgets.CheckBoxGroup(options=cols, value=cols)
+included_recom_cbg = pn.widgets.CheckBoxGroup(
+    options=recom_cols, value=recom_cols
+)
+hidden_columns_cbg = pn.widgets.CheckBoxGroup(
+    options=all_columns, value=hidden_columns
+)
+dataset_switch = pn.widgets.Switch(value=False)
 
-def count_similar_artist_terms(song_ats, other_ats):
+def count_overlapping_genres(song_ats, other_ats):
     c = 0
     for at in song_ats:
         if at in other_ats:
@@ -104,9 +68,9 @@ def count_similar_artist_terms(song_ats, other_ats):
 
 def recommendSongs(selection, k, cols, songs):
     song_id = selection[0]
-    songs["artist_terms_matches"] = songs.artist_terms.apply(
-        lambda x: count_similar_artist_terms(
-            songs.iloc[song_id].artist_terms, x
+    songs["Overlapping genres"] = songs.Genres.apply(
+        lambda x: count_overlapping_genres(
+            songs.iloc[song_id].Genres, x
         )
     )
     songs_copy = songs.copy()
@@ -154,28 +118,29 @@ def echoComparison(user_song_id, recommended_songs_df):
     return scores
 
 
-@pn.depends(s=tab.param.selection, k=k_input, cbg=checkbox_group)
-def output(s, k, cbg):
+@pn.depends(s=tab.param.selection, k=k_input, ir=included_recom_cbg, hc=hidden_columns_cbg)
+def output(s, k, ir, hc):
     if len(s) == 0:
         return "### Please select a song."
-    elif not cbg:
+    elif not ir:
         return "### Please select at least one column used for prediction."
     else:
-        recommend_df = recommendSongs(s, k, cbg, msd_df)
-        recommend_tab = pn.widgets.Tabulator(
-            recommend_df,
-            pagination="local",
-            layout="fit_columns",
-            page_size=10,
-            sizing_mode="stretch_width",
-            disabled=True,
-            formatters=formatters,
-        )
-        
+        recommend_df = recommendSongs(s, k, ir, tab.value.copy())
+        recommend_tab = create_tabulator(recommend_df, hc=hc, sel_opt=False)
         echo_results = echoComparison(s, recommend_df)
 
         return pn.Column(recommend_tab, echo_results)
 
+@pn.depends(hc=hidden_columns_cbg, watch=True)
+def update_hidden_columns(hc):
+    tab.hidden_columns = hc
+
+@pn.depends(b=dataset_switch, watch=True)
+def update_tab_df(b):
+    if b:
+        tab.value = msd_df_all
+    else:
+        tab.value = msd_df
 
 template = pn.template.VanillaTemplate(
     title="Music Recommender",
@@ -185,7 +150,11 @@ template = pn.template.VanillaTemplate(
         "### Number of recommendations",
         k_input,
         "### Include in recommendation",
-        checkbox_group
+        included_recom_cbg,
+        "### Hidden columns",
+        hidden_columns_cbg,
+        "### Allow missing values",
+        dataset_switch
     ],
     sidebar_width = 240
 )
