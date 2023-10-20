@@ -7,72 +7,18 @@ from sklearn.preprocessing import StandardScaler
 pn.extension("tabulator")
 
 formatters = {
-    "index": NumberFormatter(format="0"),
-    "lat": NumberFormatter(format="0.00000"),
-    "lon": NumberFormatter(format="0.00000"),
-    "tempo": NumberFormatter(format="0.000"),
-    "year": NumberFormatter(format="0"),
+    "Tempo": NumberFormatter(format="0"),
+    "Year": NumberFormatter(format="0"),
 }
 
 msd_df = pd.read_csv(
     "https://raw.githubusercontent.com/music-recommender/music-recommender/main/data/song_info_complete_rows.csv",
     converters={
-        "artist_terms": lambda x: x.split(",")
+        "Genres": lambda x: x.split(",")
     }
 )
 
-filters = {
-    "index": {
-        "type": "number",
-        "func": ">=",
-        "placeholder": "Enter index (min)"
-    },
-    "song_id": {
-        "type": "input",
-        "func": "like",
-        "placeholder": "Enter song id"},
-    "title": {
-        "type": "input",
-        "func": "like",
-        "placeholder": "Enter title"
-    },
-    "artist_name": {
-        "type": "input",
-        "func": "like",
-        "placeholder": "Enter artist"
-    },
-    "artist_terms": {
-        "type": "input",
-        "func": "like",
-        "placeholder": "Enter terms"
-    },
-    "location": {
-        "type": "input",
-        "func": "like",
-        "placeholder": "Enter location"
-    },
-    "lat": {
-        "type": "number",
-        "func": ">=",
-        "placeholder": "Enter latitude (min)"
-    },
-    "lon": {
-        "type": "number",
-        "func": ">=",
-        "placeholder": "Enter longitude (min)"
-    },
-    "tempo": {
-        "type": "number",
-        "func": ">=",
-        "placeholder": "Enter tempo (min)"
-    },
-    "year": {
-        "type": "number",
-        "func": ">=",
-        "placeholder": "Enter year (min)"
-    },
-}
-
+hidden_columns=["index", "ID", "Latitude", "Longitude"]
 
 tab = pn.widgets.Tabulator(
     msd_df,
@@ -80,19 +26,20 @@ tab = pn.widgets.Tabulator(
     layout="fit_columns",
     page_size=10,
     sizing_mode="stretch_width",
-    header_filters=filters,
     disabled=True,
     selectable="checkbox",
     formatters=formatters,
+    hidden_columns=hidden_columns
 )
 
 k_input = pn.widgets.IntInput(
     value=5, start=1, step=1, end=msd_df.shape[0], width=100
 )
-cols = ["year", "tempo", "lat", "lon", "artist_terms_matches"]
-checkbox_group = pn.widgets.CheckBoxGroup(options=cols, value=cols)
+columns_recom = ["Year", "Tempo", "Latitude", "Longitude", "Overlapping genres"]
+checkbox_group = pn.widgets.CheckBoxGroup(
+    options=columns_recom, value=columns_recom)
 
-def count_similar_artist_terms(song_ats, other_ats):
+def count_overlapping_artist_terms(song_ats, other_ats):
     c = 0
     for at in song_ats:
         if at in other_ats:
@@ -102,8 +49,8 @@ def count_similar_artist_terms(song_ats, other_ats):
 
 def recommendSongs(selection, k, cols, songs):
     song_id = selection[0]
-    songs["artist_terms_matches"] = songs.artist_terms.apply(
-        lambda x: count_similar_artist_terms(
+    songs["Overlapping genres"] = songs.artist_terms.apply(
+        lambda x: count_overlapping_artist_terms(
             songs.iloc[song_id].artist_terms, x
         )
     )
@@ -141,6 +88,7 @@ def output(s, k, cbg):
             sizing_mode="stretch_width",
             disabled=True,
             formatters=formatters,
+            hidden_columns=hidden_columns
         )
         
         jam_results = None # Vector
