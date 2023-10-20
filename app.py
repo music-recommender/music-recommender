@@ -114,7 +114,8 @@ def echoComparison(user_song_id, recommended_songs_df):
                 user_song_listeners[i] += 1
 
     for i in range(len(scores)):
-        scores[i] = scores[i] / user_song_listeners[i]
+        if user_song_listeners[i] > 0:
+            scores[i] = scores[i] / user_song_listeners[i]
     return scores
 
 
