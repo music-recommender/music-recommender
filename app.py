@@ -39,7 +39,7 @@ columns_recom = ["Year", "Tempo", "Latitude", "Longitude", "Overlapping genres"]
 checkbox_group = pn.widgets.CheckBoxGroup(
     options=columns_recom, value=columns_recom)
 
-def count_overlapping_artist_terms(song_ats, other_ats):
+def count_overlapping_genres(song_ats, other_ats):
     c = 0
     for at in song_ats:
         if at in other_ats:
@@ -49,9 +49,9 @@ def count_overlapping_artist_terms(song_ats, other_ats):
 
 def recommendSongs(selection, k, cols, songs):
     song_id = selection[0]
-    songs["Overlapping genres"] = songs.artist_terms.apply(
-        lambda x: count_overlapping_artist_terms(
-            songs.iloc[song_id].artist_terms, x
+    songs["Overlapping genres"] = songs.Genres.apply(
+        lambda x: count_overlapping_genres(
+            songs.iloc[song_id].Genres, x
         )
     )
     songs_copy = songs.copy()
