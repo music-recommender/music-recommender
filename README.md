@@ -4,7 +4,7 @@ This miniproject is part of the course [<em>Introduction to Data Science</em>](h
 
 Please go test the [app](https://music-recommender.github.io/music-recommender/app/app.html) online.
 
-We are using Million Song Dataset...
+We are using <em>Million Song Dataset</em>...
 
 <em>Thierry Bertin-Mahieux, Daniel P.W. Ellis, Brian Whitman, and Paul Lamere. 
 The Million Song Dataset. In Proceedings of the 12th International Society
@@ -14,6 +14,18 @@ Million Song Dataset, official website by Thierry Bertin-Mahieux,
 available at: http://millionsongdataset.com/</em>
 
 ... to recommend songs for a user depending on the user's selections and preferences.
+
+## Implementation
+
+The app is build with [Panel](https://panel.holoviz.org/) which is a "<em>powerful data exploration & web app framework for Python</em>".
+
+We currently use [PyScript](https://pyscript.net/) to convert the app to [WebAssembly](https://webassembly.org/). This allows us to serve our app on <em>GitHub Pages</em>.
+
+## Instructions
+
+Please visit [user guide](https://github.com/music-recommender/music-recommender/blob/main/documents/user_guide.md) to see instructions related to using the app.
+
+Also, there is [info](https://github.com/music-recommender/music-recommender/blob/main/documents/info.md) document for developers related to working with the project.
 
 ## Contributors
 
