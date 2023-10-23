@@ -67,28 +67,49 @@ def count_overlapping_genres(song_ats, other_ats):
 
 
 def recommendSongs(selection, k, cols, songs):
-    song_id = selection[0]
-    songs["Overlapping genres"] = songs.Genres.apply(
-        lambda x: count_overlapping_genres(
-            songs.iloc[song_id].Genres, x
-        )
-    )
-    songs_copy = songs.copy()
-    songs = pd.DataFrame(
-        StandardScaler().fit_transform(songs[cols].values),
-        columns=cols,
-        index=songs.index,
-    )
-    song_samples = songs.values.tolist()
-    nn = NearestNeighbors(n_neighbors=1)
-    nn.fit(song_samples)
-    v = nn.kneighbors(
-        [songs.iloc[song_id].tolist()],
-        k + 1,
-        return_distance=False
-    )
-
-    return songs_copy.iloc[v[0][1:]]
+    # If overlapping genres are used, we need to remove the column temporarily because it is not built yet
+    use_genres = "Overlapping genres" in cols
+    if use_genres:
+        cols.remove("Overlapping genres")
+    # ids = list(map(lambda i: songs.iloc[i]["ID"], selection)) # Maybe del
+    genres = list(map(lambda song: songs.iloc[song]["Genres"], selection))
+    # save song data 
+    selection_songs = songs[cols].iloc[selection]
+    # Remove all songs from the artists in the selection
+    songs = songs[~ songs["Artist"].isin(list(songs.iloc[selection]["Artist"]))]
+    # selection = list(map(lambda i: songs.index[songs["ID"] == test_id].tolist(), selection)) # Maybe del
+    # We create a separate dataframe for each song (because the Overlapping genres are different for each song)
+    songs_with_genres = list()
+    for s in range(len(selection)):
+        songs_with_genres.append(songs[cols].copy())
+        if use_genres:
+            songs_with_genres[s]["Overlapping genres"] = songs["Genres"].apply(
+                lambda x: count_overlapping_genres(
+                genres[s], x
+            ))
+    if use_genres:
+        selection_songs["Overlapping genres"] = list(map(len, genres))
+    # We normalize everything using the same scaler 
+    scaler = StandardScaler().fit(songs_with_genres[0])
+    songs_data = list()
+    for song_list in songs_with_genres:
+        songs_data.append(scaler.transform(song_list))
+    selection_songs_scaled = scaler.transform(selection_songs)
+    # Create list of nearest neighbours for each song
+    neighbours = list()
+    for song, matrix in zip(selection_songs_scaled, songs_data):
+        # We make k*selection_size suggestions here, just in case there are better candidates since more input songs mean broader search space
+        neighbours += NearestNeighbors(n_neighbors = k*len(selection)).fit(matrix).kneighbors([song], return_distance = False).tolist()[0]
+    # Delete duplicates
+    neighbours = list(set(neighbours))
+    results = songs.iloc[neighbours].copy().reset_index()
+    results["distance"] = [0] * len(results)
+    # Calculate squared distances for each result song for each input song
+    for song, matrix in zip(selection_songs_scaled, songs_data):
+        for i, result in enumerate(neighbours):
+            results.loc[i, "distance"] += np.square(np.linalg.norm(song - matrix[result]))
+    # Sort by least distance and only return the first k elements
+    return results.sort_values(by=["distance"]).iloc[:k].reset_index(drop=True)
 
 def readEchoUserData():
     with open("data/echo_user_data.json", "r") as f:
@@ -99,7 +120,7 @@ def readEchoUserData():
 
 def echoComparison(user_song_id, recommended_songs_df):
     song_ids = np.array([
-        row["song_id"] for row in recommended_songs_df.iloc
+        row["ID"] for row in recommended_songs_df.iloc
     ])
     echo_listens = readEchoUserData()
     users = list(echo_listens.keys())
@@ -128,9 +149,10 @@ def output(s, k, ir, hc):
     else:
         recommend_df = recommendSongs(s, k, ir, tab.value.copy())
         recommend_tab = create_tabulator(recommend_df, hc=hc, sel_opt=False)
-        echo_results = echoComparison(s, recommend_df)
-
-        return pn.Column(recommend_tab, echo_results)
+        # Commented this out because it didn't work for me. Had the same issue as Matias
+        # echo_results = echoComparison(s, recommend_df)
+        # return pn.Column(recommend_tab, echo_results)
+        return pn.Column(recommend_tab)
 
 @pn.depends(hc=hidden_columns_cbg, watch=True)
 def update_hidden_columns(hc):

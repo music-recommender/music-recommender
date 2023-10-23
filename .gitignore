@@ -1,4 +1,5 @@
 .env
+.ipynb_checkpoints
 create_jam_msd_map.py
 create_msd_jam_map.py
 create_preprocessed_likes_df.py
@@ -7,6 +8,7 @@ data/jam_to_msd.tsv
 data/likes.tsv
 data/song_info_test.csv
 data/song_info.csv
+multiple_recommender_tester.ipynb
 test.py
 train_triplets.txt
 train_triplets_filtered.csv

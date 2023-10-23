@@ -9,7 +9,7 @@ echo_data = pd.read_csv("data/train_triplets.txt",
                 names=["user_id", "msd_id", "listen_times"])
 
 # Filter to the songs that we have
-song_set = set(songs["song_id"])
+song_set = set(songs["ID"])
 echo_data = echo_data[echo_data["msd_id"].isin(song_set)]
 
 # Create a JSON file with every user's likes gathered as a list
