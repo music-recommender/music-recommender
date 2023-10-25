@@ -103,13 +103,13 @@ def recommendSongs(selection, k, cols, songs):
     # Delete duplicates
     neighbours = list(set(neighbours))
     results = songs.iloc[neighbours].copy().reset_index()
-    results["distance"] = [0] * len(results)
+    results["Distance"] = [0] * len(results)
     # Calculate squared distances for each result song for each input song
     for song, matrix in zip(selection_songs_scaled, songs_data):
         for i, result in enumerate(neighbours):
-            results.loc[i, "distance"] += np.square(np.linalg.norm(song - matrix[result]))
+            results.loc[i, "Distance"] += np.square(np.linalg.norm(song - matrix[result]))
     # Sort by least distance and only return the first k elements
-    return results.sort_values(by=["distance"]).iloc[:k].reset_index(drop=True)
+    return results.sort_values(by=["Distance"]).iloc[:k].reset_index(drop=True)
 
 def readEchoUserData():
     with open("data/echo_user_data.json", "r") as f:
