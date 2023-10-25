@@ -9,9 +9,9 @@ import json
 pn.extension("tabulator")
 
 all_columns = [
-    "index", "ID", "Title", "Artist", "Genres", "Location", "Latitude", "Longitude", "Tempo", "Year", "Overlapping genres"
+    "index", "ID", "Title", "Artist", "Genres", "Location", "Latitude", "Longitude", "Tempo", "Year", "Overlapping genres", "Distance"
 ]
-hidden_columns=["index", "ID", "Latitude", "Longitude"]
+hidden_columns=["index", "ID", "Latitude", "Longitude", "Distance"]
 recom_cols = ["Year", "Tempo", "Latitude", "Longitude", "Overlapping genres"]
 
 msd_df = pd.read_csv(
