@@ -113,28 +113,28 @@
     <div id="header-items">
     </div>
     <div class="pn-busy-container">
-      <div id="c3d8ea1d-3ffa-4cb1-be81-5d19aab66f6e" data-root-id="p1018" style="display: contents;"></div>
+      <div id="c915d7ee-e30f-4b69-80c2-320c7d040d99" data-root-id="p1018" style="display: contents;"></div>
     </div>
   </nav>
 
   <div id="content">
     <div class="sidenav " id="sidebar">
       <ul class="nav flex-column">
-          <div id="5bfcd8a3-9154-48a2-b115-3c8a7705a65e" data-root-id="p1021" style="display: contents;"></div>
-          <div id="b8b919dc-1e0e-4837-b70e-ebbc8e3d0023" data-root-id="p1024" style="display: contents;"></div>
-          <div id="0828c24c-7dcc-4571-8c6a-ef913f722ff6" data-root-id="p1027" style="display: contents;"></div>
-          <div id="41c616ea-bc46-4545-8a84-9ffe6c3100de" data-root-id="p1029" style="display: contents;"></div>
-          <div id="d16140a5-bbce-41c5-9cf0-a47df8fbbcfa" data-root-id="p1032" style="display: contents;"></div>
-          <div id="fe5f2243-f095-48ca-acef-c695a708fcb8" data-root-id="p1034" style="display: contents;"></div>
-          <div id="c6bdfada-e279-4f4e-893b-39b4dae120cd" data-root-id="p1037" style="display: contents;"></div>
-          <div id="36566f14-c411-40b4-8db5-4320402d3a8f" data-root-id="p1039" style="display: contents;"></div>
-          <div id="1a511b2f-9f7d-48ad-b31e-577d988a392b" data-root-id="p1042" style="display: contents;"></div>
-          <div id="0c207c01-3027-45e0-af7f-97a547c19747" data-root-id="p1044" style="display: contents;"></div>
+          <div id="049488e4-45d6-4cfe-855c-f208d3170925" data-root-id="p1021" style="display: contents;"></div>
+          <div id="259367e2-55eb-418d-981d-7801a92a6576" data-root-id="p1024" style="display: contents;"></div>
+          <div id="e2161ff3-3549-46a7-b2e9-a2d277d6e7b1" data-root-id="p1027" style="display: contents;"></div>
+          <div id="0e972eab-2df4-486c-babf-ea1289d70740" data-root-id="p1029" style="display: contents;"></div>
+          <div id="5ae34962-8c98-4e9f-9cf6-68a6648d6719" data-root-id="p1032" style="display: contents;"></div>
+          <div id="bcb12b36-4e49-4250-a1e1-94994fbd79fb" data-root-id="p1034" style="display: contents;"></div>
+          <div id="835cf6cc-4c2a-478e-8cb2-16d75cf72fd8" data-root-id="p1037" style="display: contents;"></div>
+          <div id="ae460ee4-aead-431e-8d83-29899fdb0ff5" data-root-id="p1039" style="display: contents;"></div>
+          <div id="dd9e1c9a-abc4-4c61-a2fe-bf049bcf7fab" data-root-id="p1042" style="display: contents;"></div>
+          <div id="c6c21d04-a7e8-4f77-be18-7db29238a47a" data-root-id="p1044" style="display: contents;"></div>
       </ul>
     </div>
 
     <div class="main" id="main">
-      <div id="b0f85845-cf02-4258-ad4c-a507ee070ee1" data-root-id="p1045" style="display: contents;"></div>
+      <div id="8767bfba-b0ae-45c5-87f0-c7f86521cc3c" data-root-id="p1045" style="display: contents;"></div>
 
       <div id="pn-Modal" class="pn-modal header-adjust">
 	<div class="pn-modal-content">
@@ -171,10 +171,10 @@
 </script>
 
 
-<div id="bdfeb76d-6fd9-4af5-8e11-2659039cfd7d" data-root-id="p1011" style="display: contents;"></div>
-<div id="c10504b2-8c94-42dc-bcc2-a5ac0d1bc56f" data-root-id="p1014" style="display: contents;"></div>
-<div id="ed185e6e-0fd1-4abb-a556-c3027a0dfa10" data-root-id="p1004" style="display: contents;"></div>
-<div id="3071fa99-91ff-4d26-bf52-6c7a13032930" data-root-id="p1015" style="display: contents;"></div>
+<div id="85b7dd5c-c46d-45e2-854a-e48bf4a03095" data-root-id="p1011" style="display: contents;"></div>
+<div id="1243a193-6522-469c-a9ac-b22fbfea0237" data-root-id="p1014" style="display: contents;"></div>
+<div id="74a019e2-3812-4c18-9bec-7d12011eb21c" data-root-id="p1004" style="display: contents;"></div>
+<div id="6dd31299-3e54-41b3-8f7f-3ecb448df689" data-root-id="p1015" style="display: contents;"></div>
 
   <py-config>
     packages = ['https://cdn.holoviz.org/panel/1.2.3/dist/wheels/bokeh-3.2.2-py3-none-any.whl','https://cdn.holoviz.org/panel/1.2.3/dist/wheels/panel-1.2.3-py3-none-any.whl','pyodide-http==0.2.1','numpy','pandas','scikit-learn']
@@ -196,6 +196,7 @@
 
     import panel as pn
     import pandas as pd
+    from panel.widgets import Tabulator, TextInput, IntInput, RangeSlider, CheckBoxGroup, Switch
     from bokeh.models.widgets.tables import NumberFormatter
     from sklearn.neighbors import NearestNeighbors
     from sklearn.preprocessing import StandardScaler
@@ -244,7 +245,7 @@
 
 
     def create_tabulator(df, hidden_cols, selectable):
-        return pn.widgets.Tabulator(
+        return Tabulator(
             df,
             selectable=selectable,
             hidden_columns=hidden_cols,
@@ -263,10 +264,63 @@
         selectable="checkbox",
     )
 
-    k_input = pn.widgets.IntInput(value=5, start=1, step=1, width=100)
-    include_checkboxes = pn.widgets.CheckBoxGroup(options=recom_cols, value=recom_cols)
-    hidden_checkboxes = pn.widgets.CheckBoxGroup(options=all_columns, value=hidden_columns)
-    dataset_switch = pn.widgets.Switch(value=False)
+    k_input = IntInput(value=5, start=1, step=1, width=100)
+    include_checkboxes = CheckBoxGroup(options=recom_cols, value=recom_cols)
+    hidden_checkboxes = CheckBoxGroup(options=all_columns, value=hidden_columns)
+    dataset_switch = Switch(value=False)
+
+
+    # ### Filtering songs
+
+    # In[ ]:
+
+
+    def filter(df, value, column):
+        if not value:
+            return df
+        if column in ["Title", "Artist", "Location"]:
+            return df[df[column].str.contains(value, case=False)]
+        elif column in ["Tempo", "Year"]:
+            return df[(df[column] >= value[0]) & (df[column] <= value[1])]
+        elif column == "Genres":
+            def inputs_in_list(l):
+                for p in value.split(" "):
+                    if not p.lower() in str(l):
+                        return False
+                return True
+            return df[df[column].apply(inputs_in_list)]
+
+
+    title_filter = TextInput(name="Title")
+    artist_filter = TextInput(name="Artist")
+    location_filter = TextInput(name="Location")
+    genres_filter = TextInput(name="Genres")
+    tempo_filter = RangeSlider(
+        name="Tempo",
+        step=1,
+        start=tab.value.Tempo.min(),
+        end=tab.value.Tempo.max()
+    )
+    year_filter = RangeSlider(
+        name="Year",
+        step=1,
+        start=tab.value.Year.min(),
+        end=tab.value.Year.max()
+    )
+
+    filters = {
+        "Title": (title_filter, title_filter.param.value_input),
+        "Artist": (artist_filter, artist_filter.param.value_input),
+        "Genres": (genres_filter, genres_filter.param.value_input),
+        "Location": (location_filter, location_filter.param.value_input),
+        "Tempo": (tempo_filter, tempo_filter.param.value_throttled),
+        "Year": (year_filter, year_filter.param.value_throttled)
+    }
+
+    for key, value in filters.items():
+        value[0].align = "center"
+        value[0].sizing_mode = "stretch_width"
+        tab.add_filter(pn.bind(filter, value=value[1], column=key))
 
 
     # ## Helper functions
@@ -409,6 +463,7 @@
         url = all_url if b else complete_rows_url
         tab.value = pd.read_csv(url, converters=csv_converters)
         k_input.end = tab.value.shape[0]
+        tempo_filter.end = tab.value.Tempo.max()
 
 
     # ## Template
@@ -436,9 +491,19 @@
     template.main.append(
         pn.Column(
             "# Songs",
+            pn.Row(
+                pn.layout.Spacer(width=42),
+                title_filter,
+                artist_filter,
+                genres_filter,
+                location_filter,
+                tempo_filter,
+                year_filter,
+                sizing_mode="stretch_width",
+            ),
             tab,
             "# Recommendations",
-            output
+            output,
         )
     )
 
