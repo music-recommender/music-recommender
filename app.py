@@ -104,6 +104,7 @@ def recommendSongs(selection, k, cols, songs):
     neighbours = list(set(neighbours))
     results = songs.iloc[neighbours].copy().reset_index()
     results["Distance"] = [0] * len(results)
+    results["Distance"] = results["Distance"].astype(np.float64)
     # Calculate squared distances for each result song for each input song
     for song, matrix in zip(selection_songs_scaled, songs_data):
         for i, result in enumerate(neighbours):
