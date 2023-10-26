@@ -83,7 +83,7 @@
   :root {
     --header-background: var(--design-primary-color, var(--panel-primary-color));
     --header-color: var(--design-primary-text-color, var(--panel-on-primary-color));
-    --sidebar-width: 240px;
+    --sidebar-width: 330px;
   }
   #header {
     --background-color: var(--header-background);
@@ -102,39 +102,20 @@
   <body class="pn-loading pn-arc">
 <div id="container">
   <nav id="header">
-    <span onclick="closeNav()" id="sidebar-button">
-      <div class="pn-bar"></div>
-      <div class="pn-bar"></div>
-      <div class="pn-bar"></div>
-    </span>
     <div class="app-header">
       <a class="title" href="" >&nbsp;Music Recommender</a>
     </div>
     <div id="header-items">
     </div>
     <div class="pn-busy-container">
-      <div id="c915d7ee-e30f-4b69-80c2-320c7d040d99" data-root-id="p1018" style="display: contents;"></div>
+      <div id="e6005f85-8367-4d5c-b779-8d352adf2729" data-root-id="p1018" style="display: contents;"></div>
     </div>
   </nav>
 
   <div id="content">
-    <div class="sidenav " id="sidebar">
-      <ul class="nav flex-column">
-          <div id="049488e4-45d6-4cfe-855c-f208d3170925" data-root-id="p1021" style="display: contents;"></div>
-          <div id="259367e2-55eb-418d-981d-7801a92a6576" data-root-id="p1024" style="display: contents;"></div>
-          <div id="e2161ff3-3549-46a7-b2e9-a2d277d6e7b1" data-root-id="p1027" style="display: contents;"></div>
-          <div id="0e972eab-2df4-486c-babf-ea1289d70740" data-root-id="p1029" style="display: contents;"></div>
-          <div id="5ae34962-8c98-4e9f-9cf6-68a6648d6719" data-root-id="p1032" style="display: contents;"></div>
-          <div id="bcb12b36-4e49-4250-a1e1-94994fbd79fb" data-root-id="p1034" style="display: contents;"></div>
-          <div id="835cf6cc-4c2a-478e-8cb2-16d75cf72fd8" data-root-id="p1037" style="display: contents;"></div>
-          <div id="ae460ee4-aead-431e-8d83-29899fdb0ff5" data-root-id="p1039" style="display: contents;"></div>
-          <div id="dd9e1c9a-abc4-4c61-a2fe-bf049bcf7fab" data-root-id="p1042" style="display: contents;"></div>
-          <div id="c6c21d04-a7e8-4f77-be18-7db29238a47a" data-root-id="p1044" style="display: contents;"></div>
-      </ul>
-    </div>
 
     <div class="main" id="main">
-      <div id="8767bfba-b0ae-45c5-87f0-c7f86521cc3c" data-root-id="p1045" style="display: contents;"></div>
+      <div id="a0f78420-e9c1-448c-9693-c96302b8bbd0" data-root-id="p1019" style="display: contents;"></div>
 
       <div id="pn-Modal" class="pn-modal header-adjust">
 	<div class="pn-modal-content">
@@ -171,10 +152,10 @@
 </script>
 
 
-<div id="85b7dd5c-c46d-45e2-854a-e48bf4a03095" data-root-id="p1011" style="display: contents;"></div>
-<div id="1243a193-6522-469c-a9ac-b22fbfea0237" data-root-id="p1014" style="display: contents;"></div>
-<div id="74a019e2-3812-4c18-9bec-7d12011eb21c" data-root-id="p1004" style="display: contents;"></div>
-<div id="6dd31299-3e54-41b3-8f7f-3ecb448df689" data-root-id="p1015" style="display: contents;"></div>
+<div id="3fc0d7e0-856c-4433-ba08-a959719aa364" data-root-id="p1011" style="display: contents;"></div>
+<div id="f3604452-d2b9-48ce-ba94-52088ea4b1a1" data-root-id="p1014" style="display: contents;"></div>
+<div id="c59dcba5-1dd2-4ff5-8593-434505cd9ecf" data-root-id="p1004" style="display: contents;"></div>
+<div id="88bd2189-1442-4c3a-8cd8-07e01b6b87d6" data-root-id="p1015" style="display: contents;"></div>
 
   <py-config>
     packages = ['https://cdn.holoviz.org/panel/1.2.3/dist/wheels/bokeh-3.2.2-py3-none-any.whl','https://cdn.holoviz.org/panel/1.2.3/dist/wheels/panel-1.2.3-py3-none-any.whl','pyodide-http==0.2.1','numpy','pandas','scikit-learn']
@@ -196,7 +177,7 @@
 
     import panel as pn
     import pandas as pd
-    from panel.widgets import Tabulator, TextInput, IntInput, RangeSlider, CheckBoxGroup, Switch
+    from panel.widgets import Tabulator, TextInput, RangeSlider
     from bokeh.models.widgets.tables import NumberFormatter
     from sklearn.neighbors import NearestNeighbors
     from sklearn.preprocessing import StandardScaler
@@ -211,69 +192,38 @@
     # In[ ]:
 
 
-    all_url = "https://raw.githubusercontent.com/music-recommender/music-recommender/main/data/song_info_all.csv"
+    url = "https://raw.githubusercontent.com/music-recommender/music-recommender/main/data/song_info_complete_rows.csv"
 
-    complete_rows_url = "https://raw.githubusercontent.com/music-recommender/music-recommender/main/data/song_info_complete_rows.csv"
 
-    all_columns = [
-        "index",
-        "ID",
-        "Title",
-        "Artist",
-        "Genres",
-        "Location",
-        "Latitude",
-        "Longitude",
-        "Tempo",
-        "Year",
-        "Overlapping genres",
-        "Distance",
-    ]
-    hidden_columns = ["index", "ID", "Latitude", "Longitude", "Distance"]
     recom_cols = ["Year", "Tempo", "Latitude", "Longitude", "Overlapping genres"]
+    k = 5
 
-    csv_converters = {"Genres": lambda x: x.split(",")}
-    formatters = {
-        "Tempo": NumberFormatter(format="0"),
-        "Year": NumberFormatter(format="0"),
-    }
-
-
-    # ## Widgets
-
-    # In[ ]:
-
-
-    def create_tabulator(df, hidden_cols, selectable):
-        return Tabulator(
-            df,
-            selectable=selectable,
-            hidden_columns=hidden_cols,
-            pagination="local",
-            layout="fit_columns",
-            page_size=10,
-            sizing_mode="stretch_width",
-            disabled=True,
-            formatters=formatters,
-        )
-
-
-    tab = create_tabulator(
-        pd.read_csv(complete_rows_url, converters=csv_converters),
-        hidden_cols=hidden_columns,
-        selectable="checkbox",
+    tab_kwargs = dict(
+        hidden_columns=["index", "ID", "Latitude", "Longitude", "Distance"],
+        layout="fit_columns",
+        sizing_mode="stretch_width",
+        disabled=True,
+        formatters={
+            "Tempo": NumberFormatter(format="0"),
+            "Year": NumberFormatter(format="0"),
+        },
     )
 
-    k_input = IntInput(value=5, start=1, step=1, width=100)
-    include_checkboxes = CheckBoxGroup(options=recom_cols, value=recom_cols)
-    hidden_checkboxes = CheckBoxGroup(options=all_columns, value=hidden_columns)
-    dataset_switch = Switch(value=False)
 
-
-    # ### Filtering songs
+    # ## Tabulators
 
     # In[ ]:
 
+
+    songs_tab = Tabulator(
+        pd.read_csv(url, converters={"Genres": lambda x: x.split(",")}),
+        pagination="local",
+        page_size=10,
+        **tab_kwargs
+    )
+
+    selected_tab = Tabulator(songs_tab.selected_dataframe.copy(), **tab_kwargs)
+    recommend_tab = Tabulator(songs_tab.selected_dataframe.copy(), **tab_kwargs)
 
     def filter(df, value, column):
         if not value:
@@ -298,14 +248,14 @@
     tempo_filter = RangeSlider(
         name="Tempo",
         step=1,
-        start=tab.value.Tempo.min(),
-        end=tab.value.Tempo.max()
+        start=songs_tab.value.Tempo.min(),
+        end=songs_tab.value.Tempo.max()
     )
     year_filter = RangeSlider(
         name="Year",
         step=1,
-        start=tab.value.Year.min(),
-        end=tab.value.Year.max()
+        start=songs_tab.value.Year.min(),
+        end=songs_tab.value.Year.max()
     )
 
     filters = {
@@ -320,7 +270,7 @@
     for key, value in filters.items():
         value[0].align = "center"
         value[0].sizing_mode = "stretch_width"
-        tab.add_filter(pn.bind(filter, value=value[1], column=key))
+        songs_tab.add_filter(pn.bind(filter, value=value[1], column=key))
 
 
     # ## Helper functions
@@ -338,7 +288,9 @@
         return c
 
 
-    def recommendSongs(selection, k, cols, songs):
+    def recommendSongs(selection):
+        cols = recom_cols
+        songs = songs_tab.value.copy()
         # If overlapping genres are used, we need to remove the column temporarily because it is not built yet
         use_genres = "Overlapping genres" in cols
         if use_genres:
@@ -431,39 +383,34 @@
     # In[ ]:
 
 
-    @pn.depends(
-        s=tab.param.selection,
-        k=k_input,
-        include=include_checkboxes,
-        hidden=hidden_checkboxes,
-    )
-    def output(s, k, include, hidden):
-        if len(s) == 0:
-            return "### Please select a song."
-        elif len(include) == 0:
-            return "### Please select at least one column used for prediction."
-        else:
-            recommend_df = recommendSongs(s, k, include, tab.value.copy())
-            recommend_tab = create_tabulator(
-                recommend_df, hidden_cols=hidden, selectable=False
+    def handle_drop(i):
+        df = selected_tab.value.copy()
+        selected_tab.value = df[df.ID != df.iloc[i].ID]
+
+
+    def handle_selection(i):
+        if ~(selected_tab.value.index == i).any():
+            selected_tab.value = pd.concat(
+                [selected_tab.value, songs_tab.value[songs_tab.value.index == i]]
             )
-            # Commented this out because it didn't work for me. Had the same issue as Matias
-            # echo_results = echoComparison(s, recommend_df)
-            # return pn.Column(recommend_tab, echo_results)
-            return pn.Column(recommend_tab)
+            recommend_tab.value = recommendSongs(selected_tab.value.index.tolist())
 
 
-    @pn.depends(hidden=hidden_checkboxes, watch=True)
-    def update_hidden_columns(hidden):
-        tab.hidden_columns = hidden
+    songs_tab.on_click(lambda e: handle_selection(e.row))
+    selected_tab.on_click(lambda e: handle_drop(e.row))
 
 
-    @pn.depends(b=dataset_switch, watch=True)
-    def switch_dataset(b):
-        url = all_url if b else complete_rows_url
-        tab.value = pd.read_csv(url, converters=csv_converters)
-        k_input.end = tab.value.shape[0]
-        tempo_filter.end = tab.value.Tempo.max()
+    @pn.depends(selected_df=selected_tab.param.value)
+    def outputs(selected_df):
+        if selected_df.empty:
+            return "## Please select something."
+
+        return pn.Column(
+            "# Selected",
+            selected_tab,
+            "# Recommendations",
+            recommend_tab
+        )
 
 
     # ## Template
@@ -472,27 +419,13 @@
 
 
     template = pn.template.VanillaTemplate(
-        title="Music Recommender",
-        sidebar=[
-            "## Settings",
-            pn.layout.Divider(),
-            "### Number of recommendations",
-            k_input,
-            "### Include in recommendation",
-            include_checkboxes,
-            "### Hidden columns",
-            hidden_checkboxes,
-            "### Allow missing values",
-            dataset_switch,
-        ],
-        sidebar_width=240,
+        title="Music Recommender"
     )
 
     template.main.append(
         pn.Column(
             "# Songs",
             pn.Row(
-                pn.layout.Spacer(width=42),
                 title_filter,
                 artist_filter,
                 genres_filter,
@@ -501,9 +434,8 @@
                 year_filter,
                 sizing_mode="stretch_width",
             ),
-            tab,
-            "# Recommendations",
-            output,
+            songs_tab,
+            outputs
         )
     )
 
