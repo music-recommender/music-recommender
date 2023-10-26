@@ -6,9 +6,9 @@ from sklearn.preprocessing import StandardScaler
 import numpy as np
 import json
 import holoviews as hv
-hv.extension("bokeh")
 
 pn.extension("tabulator")
+hv.extension("bokeh")
 
 all_columns = [
     "index", "ID", "Title", "Artist", "Genres", "Location", "Latitude", "Longitude", "Tempo", "Year", "Overlapping genres", "Distance"
