@@ -5,6 +5,8 @@ from sklearn.neighbors import NearestNeighbors
 from sklearn.preprocessing import StandardScaler
 import numpy as np
 import json
+import holoviews as hv
+hv.extension("bokeh")
 
 pn.extension("tabulator")
 
@@ -119,26 +121,28 @@ def readEchoUserData():
         echo_user_data[user] = set(echo_user_data[user])
     return echo_user_data
 
-def echoComparison(user_song_id, recommended_songs_df):
+def echoComparison(user_song_ids, recommended_songs_df):
     song_ids = np.array([
         row["ID"] for row in recommended_songs_df.iloc
     ])
     echo_listens = readEchoUserData()
     users = list(echo_listens.keys())
-    scores = np.zeros(len(song_ids))
-    user_song_listeners = np.zeros(len(song_ids))
+    scores = np.zeros((len(user_song_ids), len(song_ids)))
+    user_song_listeners = np.zeros((len(user_song_ids), len(song_ids)))
 
-    for i in range(len(song_ids)):
-        for user in users:
+    for user in users:
+        for i, user_song_id in enumerate(user_song_ids):
             if user_song_id in echo_listens[user]:
-                if song_ids[i] in echo_listens[user]:
-                    scores[i] += 1
-                user_song_listeners[i] += 1
+                for j in range(len(song_ids)):
+                    if song_ids[j] in echo_listens[user]:
+                        scores[i][j] += 1
+                user_song_listeners[i][j] += 1
 
     for i in range(len(scores)):
-        if user_song_listeners[i] > 0:
-            scores[i] = scores[i] / user_song_listeners[i]
-    return scores
+        for j in range(len(scores[0])):
+            if user_song_listeners[i][j] > 0:
+                scores[i][j] = scores[i][j] / user_song_listeners[i][j]
+    return scores.mean(axis=0)
 
 
 @pn.depends(s=tab.param.selection, k=k_input, ir=included_recom_cbg, hc=hidden_columns_cbg)
@@ -151,9 +155,11 @@ def output(s, k, ir, hc):
         recommend_df = recommendSongs(s, k, ir, tab.value.copy())
         recommend_tab = create_tabulator(recommend_df, hc=hc, sel_opt=False)
         # Commented this out because it didn't work for me. Had the same issue as Matias
-        # echo_results = echoComparison(s, recommend_df)
-        # return pn.Column(recommend_tab, echo_results)
-        return pn.Column(recommend_tab)
+        echo_results = echoComparison(s, recommend_df)
+        print(echo_results)
+        echo_as_percent = np.array([0.5, 0.6, 0.35, 0.7, 0.5])*100
+        return pn.Column(recommend_tab, hv.Bars(echo_results*100).opts(ylim=(0, 100)))
+        # return pn.Column(recommend_tab)
 
 @pn.depends(hc=hidden_columns_cbg, watch=True)
 def update_hidden_columns(hc):
