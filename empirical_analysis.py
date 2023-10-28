@@ -15,7 +15,7 @@ columns = [
 
 combs = list(chain.from_iterable(combinations(columns, r) for r in range(len(columns)+1)))
 
-for comb in tqdm(combs[1:10]):
+for comb in tqdm(combs[31:32]):
     arr = np.zeros(5)
     for i in tqdm(range(len(msd_df))):
         arr += echoComparison([i], recommendSongs([i], 5, list(comb), msd_df))
