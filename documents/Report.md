@@ -4,7 +4,7 @@
 
 ### General description
 
-`TODO`
+Music Recommender is a web application for finding new music to listen to. Users can search for songs they like and get song recommendations based on those. The app tries to find songs with similar attributes such as genre, release year, tempo, artist and location.
 
 ### Using the recommender
 
@@ -48,13 +48,25 @@ evalutation = ----------------------------------------------------------
 
 The song IDs from 1M had already been paired with those from Thisismyjam using fuzzy string matching with the Python search engine library Whoosh. Unfortunately, it was noticed that the amount of matching songs in our project's subset of songs was not large enough to perform a good evaluation, so new data had to be found. The second plan was to perform a similar process with data from the Echo taste profile dataset, which contained similar data for 1 million users. However, it was noticed that each user seemed to only have a few songs on their list (1.69 on average), which was insufficient for our needs. An empirical analysis where different combinations of attributes that were considered in the recommendation part was performed to see if a better subset of attributes that would yield a subset of users that would have a larger number of songs in their lists could be found, but did not produce any better results. A working version of the evaluation code was still completed and has been left in the program for documentation purposes.
 
-### Panel interface
+### Panel Interface
 
-`TODO`
+The application is built with [Panel](https://panel.holoviz.org/), which has enabled us to create a web application using Python. Panel is easy to use and offers rich interactive features. For a short project like this, we were pleased with how relatively easy it was to utilize existing components that worked smoothly. However, we also encountered some limitations, insufficient documentation, and a lack of online support.
+
+The Tabulator widget, which plays a central role in the application, leverages Pandas DataFrames to enable the powerful display, filtering, and sorting of the songs, making song selection a straightforward process for users. All the loaded songs, selected songs, and recommended songs are displayed in separate Tabulator widgets. In addition, the first mentioned has a paginator and other Panel widgets that are used for filtering. Those `TextInput` and `RangeSlider` widgets filter specific columns, allowing users to search for a specific song or songs with preferred features.
+
+The interactive features have allowed us to implement automatic functionality, making the user experience seamless. Simply selecting a row already produces recommendations relatively quickly.
+
+The complete code for the application can be found in the [app.ipynb](https://github.com/music-recommender/music-recommender/blob/main/app.ipynb).
 
 ### Deployment
 
-`TODO`
+We utilize [PyScript](https://pyscript.net/) to convert the application to [WebAssembly](https://webassembly.org/). This approach enables us to host our PyScript-based application on **GitHub Pages**. Notably, GitHub Actions automatically set up the deployment to GitHub Pages, streamlining the process.
+
+While GitHub Pages may not be the most optimal choice for hosting a Panel application (considering factors like loading time), it has adequately served our needs for this project. Not to mention that it is a free option.
+
+Please note that when accessing the app [online](https://music-recommender.github.io/music-recommender/app/app.html), it can take around half a minute for PyScript-based application to download required packages and prepare the app.
+
+
 
 ## Reflection
 
