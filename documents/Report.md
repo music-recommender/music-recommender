@@ -70,4 +70,4 @@ There are many ways to improve the recommendation algorithm. While our current a
 
 ## Learning Outcomes
 
-`TODO`
+A big part of this project was learning how to compromise between our expections of the project scope and what was realizable, given the dataset and the time constraints. A thorough analysis of the data helps with estimating the possibilities—we saw this concretely with the sparsity of the Thisismyjam dataset, having to switch to the Echo Nest dataset for our empirical validation. Having to navigate the dataset and adjust the project and implementation accordingly was a continuous red thread guiding our project work. In the same vein, we needed to learn how to prioritize our work. In the end, a lot of time was spent on fixing the appearance of the deployed website and adjusting minutiae in the css, which would have been better spent on improving the recommender algorithm.
