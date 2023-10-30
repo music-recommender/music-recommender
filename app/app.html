@@ -107,14 +107,14 @@
     <div id="header-items">
     </div>
     <div class="pn-busy-container">
-      <div id="b7947da8-30e1-48ed-b3a9-ea67a9c76df0" data-root-id="p1018" style="display: contents;"></div>
+      <div id="bfbe8778-9bb8-4046-8413-d9ce331dcc8f" data-root-id="p1018" style="display: contents;"></div>
     </div>
   </nav>
 
   <div id="content">
 
     <div class="main" id="main">
-      <div id="78f42b57-43e7-4b7f-a64e-4ea5c1d2a155" data-root-id="p1019" style="display: contents;"></div>
+      <div id="60980547-94ea-4dba-b2b9-359f087e9cc4" data-root-id="p1019" style="display: contents;"></div>
 
       <div id="pn-Modal" class="pn-modal header-adjust">
 	<div class="pn-modal-content">
@@ -151,10 +151,10 @@
 </script>
 
 
-<div id="66ff79e3-f043-4ca5-9c59-eaf710e60a5e" data-root-id="p1011" style="display: contents;"></div>
-<div id="1962b45b-15c4-44a3-b27c-670da0f13c2d" data-root-id="p1014" style="display: contents;"></div>
-<div id="277e7dc3-545d-4470-a62a-d7bdd7582ab3" data-root-id="p1004" style="display: contents;"></div>
-<div id="9e6267b5-13ae-42ab-b411-83900dafb606" data-root-id="p1015" style="display: contents;"></div>
+<div id="2078413c-1d15-4213-91c7-647fd1f1be31" data-root-id="p1011" style="display: contents;"></div>
+<div id="7a41c4ec-8cf0-43d1-9e4b-9ffdb5bb727e" data-root-id="p1014" style="display: contents;"></div>
+<div id="c87bd491-8ea4-444e-95ea-dafcdcdc7ab5" data-root-id="p1004" style="display: contents;"></div>
+<div id="7fcf5598-a786-4b0a-9882-232af342c2c9" data-root-id="p1015" style="display: contents;"></div>
 
   <py-config>
     packages = ['https://cdn.holoviz.org/panel/1.2.3/dist/wheels/bokeh-3.2.2-py3-none-any.whl','https://cdn.holoviz.org/panel/1.2.3/dist/wheels/panel-1.2.3-py3-none-any.whl','pyodide-http==0.2.1','numpy','pandas','scikit-learn']
@@ -291,7 +291,7 @@
 
 
     def recommendSongs(selection):
-        cols = recom_cols
+        cols = recom_cols.copy()
         songs = songs_tab.value.copy()
         # If overlapping genres are used, we need to remove the column temporarily because it is not built yet
         cols.remove("Overlapping genres")
