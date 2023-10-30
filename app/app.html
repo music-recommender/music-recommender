@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Music Recommender</title>
     <link rel="apple-touch-icon" sizes="180x180" href="https://cdn.holoviz.org/panel/1.2.3/dist/images/apple-touch-icon.png">
-<link rel="icon" href="https://cdn.holoviz.org/panel/1.2.3/dist/images/favicon.ico" type=""><meta name="name" content="Music Recommender">    <style>
+<link rel="icon" href="https://raw.githubusercontent.com/music-recommender/music-recommender/main/media/favicon.ico" type=""><meta name="name" content="Music Recommender">    <style>
       html, body {
 	display: flow-root;
         box-sizing: border-box;
@@ -74,22 +74,12 @@
 <style type="text/css">
 
 
-nav, nav *, h1{
+nav *{
   font-size: 35px;
   color: #fff;
   text-align: center;
-  animation: glow 1s ease-in-out infinite alternate;
+  text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
   text-align: center;
-}
-
-@-webkit-keyframes glow {
-  from {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
-  }
-  
-  to {
-    text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
-  }
 }
 
 </style>
@@ -129,14 +119,14 @@ nav, nav *, h1{
     <div id="header-items">
     </div>
     <div class="pn-busy-container">
-      <div id="dc947fbe-172d-4256-9952-ddfc5be2aeae" data-root-id="p1018" style="display: contents;"></div>
+      <div id="919a5118-d5e0-4983-84de-7dc15fbd2a26" data-root-id="p1018" style="display: contents;"></div>
     </div>
   </nav>
 
   <div id="content">
 
     <div class="main" id="main">
-      <div id="988f3e90-6b86-4305-acfd-0d0c7e261089" data-root-id="p1019" style="display: contents;"></div>
+      <div id="32a06336-8dd1-4308-8c54-f9c37171b26e" data-root-id="p1019" style="display: contents;"></div>
 
       <div id="pn-Modal" class="pn-modal header-adjust">
 	<div class="pn-modal-content">
@@ -173,10 +163,10 @@ nav, nav *, h1{
 </script>
 
 
-<div id="4b2bbc9c-7c9f-47b8-824e-8931faaf038e" data-root-id="p1011" style="display: contents;"></div>
-<div id="4509c0e6-bfe6-49cd-a617-d4cb39c0f39a" data-root-id="p1014" style="display: contents;"></div>
-<div id="12f08f5e-a666-4581-830e-9fed8a1e756a" data-root-id="p1004" style="display: contents;"></div>
-<div id="411fab99-2686-460e-8d95-c9a459fa48e4" data-root-id="p1015" style="display: contents;"></div>
+<div id="80a3e6c0-6b7e-441f-8799-85cd311c4f3c" data-root-id="p1011" style="display: contents;"></div>
+<div id="7a69e5cf-1dfa-445b-90fa-a4ac3a8b9358" data-root-id="p1014" style="display: contents;"></div>
+<div id="d80ea19d-5acb-4c6f-ad21-bca5f13fdf9c" data-root-id="p1004" style="display: contents;"></div>
+<div id="82afe88e-cfd5-4f49-a38a-d8c11bab9db7" data-root-id="p1015" style="display: contents;"></div>
 
   <py-config>
     packages = ['https://cdn.holoviz.org/panel/1.2.3/dist/wheels/bokeh-3.2.2-py3-none-any.whl','https://cdn.holoviz.org/panel/1.2.3/dist/wheels/panel-1.2.3-py3-none-any.whl','pyodide-http==0.2.1','numpy','pandas','scikit-learn']
@@ -191,26 +181,23 @@ nav, nav *, h1{
     #!/usr/bin/env python
     # coding: utf-8
 
-    # # App
-
-    # This notebook creates an interactive Panel app that can be accessed using a web browser.
-
     # ## Imports
 
     # In[ ]:
 
 
-    import json
     import panel as pn
     import pandas as pd
-    import numpy as np
     from panel.widgets import Tabulator, TextInput, RangeSlider
     from bokeh.models.widgets.tables import NumberFormatter
     from sklearn.neighbors import NearestNeighbors
     from sklearn.preprocessing import StandardScaler
-
+    import numpy as np
+    import json
 
     pn.extension("tabulator")
+
+    header_css = {  "text-shadow": "0 0 10px #fff, 0 0 20px #fff, 0 0 30px #0098eb, 0 0 40px #0098eb, 0 0 50px #0098eb, 0 0 60px #0098eb, 0 0 70px #0098eb"}
 
 
     # ## Constants
@@ -220,9 +207,10 @@ nav, nav *, h1{
 
     url = "https://raw.githubusercontent.com/music-recommender/music-recommender/main/data/song_info_complete_rows.csv"
 
-    recom_cols = ["Year", "Tempo", "Latitude", "Longitude", "Overlapping genres"]
 
+    recom_cols = ["Year", "Tempo", "Latitude", "Longitude", "Overlapping genres"]
     k = 5
+
     tab_kwargs = dict(
         hidden_columns=["index", "ID", "Latitude", "Longitude", "Distance"],
         layout="fit_columns",
@@ -446,10 +434,10 @@ nav, nav *, h1{
             return "## Please select something."
 
         return pn.Column(
-            "# Selected",
+            pn.pane.HTML("<h1>Selected</h1>", styles = header_css),
             selected_text,
             selected_tab,
-            "# Recommendations",
+            pn.pane.HTML("<h1>Recommendations</h1>", styles = header_css),
             recommend_text,
             recommend_tab
         )
@@ -463,36 +451,29 @@ nav, nav *, h1{
     template = pn.template.VanillaTemplate(
         title="Music Recommender",
         theme="dark",
-        header_background="#2e2e2e"
+        header_background="#2e2e2e",
+        favicon="https://raw.githubusercontent.com/music-recommender/music-recommender/main/media/favicon.ico"
     )
 
     css = ["""
 
-    nav, nav *, h1{
+    nav *{
       font-size: 35px;
       color: #fff;
       text-align: center;
-      animation: glow 1s ease-in-out infinite alternate;
+      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
       text-align: center;
     }
-
-    @-webkit-keyframes glow {
-      from {
-        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
-      }
-      
-      to {
-        text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
-      }
-    }
     """]
+
+    h1_css = {}
 
     template.config.raw_css = css
 
     template.main.append(
         pn.Column(
             intro_text,
-            "# Songs",
+            pn.pane.HTML("<h1>Songs</h1>", styles = header_css),
             songs_text,
             pn.Row(
                 title_filter,
@@ -505,7 +486,6 @@ nav, nav *, h1{
             songs_tab,
             outputs,
             stylesheets = css
-            # styles = {"text-shadow": "0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;"}
         ),
     )
 
