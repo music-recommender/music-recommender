@@ -3,7 +3,7 @@ import pandas as pd
 import hdf5_getters as g
 import numpy as np
 
-MSD_ROOT = "/home/taleiko/Documents/Introduction to data science/Mini-project/MillionSongSubset"
+MSD_ROOT = "PATH_TO_MillionSongSubset"
 OUTPUT_FILE = "data/song_info_all.csv"
 
 files = []
