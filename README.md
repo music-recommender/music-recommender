@@ -2,7 +2,7 @@
 
 This miniproject is part of the course [<em>Introduction to Data Science</em>](https://studies.helsinki.fi/kurssit/toteutus/hy-opt-cur-2324-b449b3af-1ec9-4a04-8a4c-20461c02dbc4) (University of Helsinki).
 
-Please go test the [app](https://music-recommender.github.io/music-recommender/app/app.html) online.
+Please go test the [app](https://music-recommender.github.io/music-recommender/app/app.html).
 
 We are using <em>Million Song Dataset</em>...
 
@@ -13,7 +13,15 @@ for Music Information Retrieval Conference (ISMIR 2011), 2011.
 Million Song Dataset, official website by Thierry Bertin-Mahieux,
 available at: http://millionsongdataset.com/</em>
 
-... to recommend songs for a user depending on the user's selections and preferences.
+... to recommend songs for a user depending on the user's selections.
+
+## Documentation
+
+- [Documents](https://github.com/music-recommender/music-recommender/tree/main/documents)
+- [Report (Markdown)](https://github.com/music-recommender/music-recommender/blob/main/documents/Report.md)
+- [Report (PDF)](https://github.com/music-recommender/music-recommender/blob/main/documents/Report.pdf)
+- [Server instructions](https://github.com/music-recommender/music-recommender/blob/main/documents/server_instructions.md)
+- [User guide](https://github.com/music-recommender/music-recommender/blob/main/documents/user_guide.md)
 
 ## Contributors
 
