@@ -10,7 +10,7 @@
 
 The final webpage is made to be as intuitive to use as possible. In theory, no instructions should be necessary aside from the ones given on the web page itself. However, a more detailed user guide is available [in the GitHub repository](https://github.com/music-recommender/music-recommender/blob/main/documents/user_guide.md).
 
-## Technical description
+## Technical descriptionNearest
 
 ## The dataset
 
@@ -64,7 +64,7 @@ The empirical analysis with the Echo Nest Taste Profile Subset did not yield any
 
 On the other hand, the results may show that our recommendation algorithm is too naïve or unrefined, since even given this sparse dataset, one would expect at least marginally better results. This will be discussed further in the segment `Possible improvements`.
 
-Since the verification data from Thisismyjam and Echo did not suit the project's needs, the evaluation part of the app was never visualized. The code that performs this part is still left in the code under "Comparison" in the method `echoComparison()`. Below is a sketch of what the visualization would have looked like. The idea was to have histograms with the recommended songs on the X axis and the like rate on the Y axis. See Evaluation of the recommendations for more info about the evaluation.
+Since the verification data from Thisismyjam and Echo did not suit the project's needs, the evaluation part of the app was never visualized. The code that performs this part is still left in the code under "Comparison" in the method `echoComparison()`. Below is a sketch of what the visualization would havehttps://github.com/music-recommender/music-recommender/blob/main/documents/Report.md#evaluation-of-the-recommendations looked like. The idea was to have histograms with the recommended songs on the X axis and the like rate on the Y axis. See [Evaluation of the recommendations](https://github.com/music-recommender/music-recommender/blob/main/documents/Report.md#evaluation-of-the-recommendations) for more info about the evaluation.
 
 ![Histograms](../media/evaluation_histogram_sketch.png)
 
