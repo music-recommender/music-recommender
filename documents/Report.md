@@ -10,7 +10,7 @@ Music Recommender is a web application for finding new music to listen to. Users
 
 The final webpage is made to be as intuitive to use as possible. In theory, no instructions should be necessary aside from the ones given on the web page itself. However, a more detailed user guide is available [in the GitHub repository](https://github.com/music-recommender/music-recommender/blob/main/documents/user_guide.md).
 
-## Technical description
+## Technical descriptionNearest
 
 ## The dataset
 
@@ -75,6 +75,10 @@ Please note that when accessing the app [online](https://music-recommender.githu
 The empirical analysis with the Echo Nest Taste Profile Subset did not yield any useful results. There could be several reasons for that: One the one hand, our data was incredibly sparse. Only using the 1% 1M subset meant that we also could only use ~1% of the Echo set. This was reduced even more, as a sizeable number of user data either only covered one artist or had very varied taste, both of which are not handled by our recommender. It would be interesting to see this validation on the whole 1M, where most of the sparsity-related problems would not occur.
 
 On the other hand, the results may show that our recommendation algorithm is too naïve or unrefined, since even given this sparse dataset, one would expect at least marginally better results. This will be discussed further in the segment `Possible improvements`.
+
+Since the verification data from Thisismyjam and Echo did not suit the project's needs, the evaluation part of the app was never visualized. The code that performs this part is still left in the code under "Comparison" in the method `echoComparison()`. Below is a sketch of what the visualization would havehttps://github.com/music-recommender/music-recommender/blob/main/documents/Report.md#evaluation-of-the-recommendations looked like. The idea was to have histograms with the recommended songs on the X axis and the like rate on the Y axis. See [Evaluation of the recommendations](https://github.com/music-recommender/music-recommender/blob/main/documents/Report.md#evaluation-of-the-recommendations) for more info about the evaluation.
+
+![Histograms](../media/evaluation_histogram_sketch.png)
 
 ### Possible improvements
 
