@@ -15,18 +15,6 @@ available at: http://millionsongdataset.com/</em>
 
 ... to recommend songs for a user depending on the user's selections and preferences.
 
-## Implementation
-
-The app is build with [Panel](https://panel.holoviz.org/) which is a "<em>powerful data exploration & web app framework for Python</em>".
-
-We currently use [PyScript](https://pyscript.net/) to convert the app to [WebAssembly](https://webassembly.org/). This allows us to serve our app on <em>GitHub Pages</em>.
-
-## Instructions
-
-Please visit [user guide](https://github.com/music-recommender/music-recommender/blob/main/documents/user_guide.md) to see instructions related to using the app.
-
-Also, there is [info](https://github.com/music-recommender/music-recommender/blob/main/documents/info.md) document for developers related to working with the project.
-
 ## Contributors
 
 - Anton Taleiko ([H4m5t3r](https://github.com/H4m5t3r))
