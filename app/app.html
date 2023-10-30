@@ -73,6 +73,28 @@
 <link rel="stylesheet" href="https://cdn.holoviz.org/panel/1.2.3/dist/bundled/vanillatemplate/vanilla.css">
 <style type="text/css">
 
+
+nav, nav *, h1{
+  font-size: 35px;
+  color: #fff;
+  text-align: center;
+  animation: glow 1s ease-in-out infinite alternate;
+  text-align: center;
+}
+
+@-webkit-keyframes glow {
+  from {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+  }
+  
+  to {
+    text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+  }
+}
+
+</style>
+<style type="text/css">
+
 :host(.pn-loading.pn-arc):before, .pn-loading.pn-arc:before {
   background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHN0eWxlPSJtYXJnaW46IGF1dG87IGJhY2tncm91bmQ6IG5vbmU7IGRpc3BsYXk6IGJsb2NrOyBzaGFwZS1yZW5kZXJpbmc6IGF1dG87IiB2aWV3Qm94PSIwIDAgMTAwIDEwMCIgcHJlc2VydmVBc3BlY3RSYXRpbz0ieE1pZFlNaWQiPiAgPGNpcmNsZSBjeD0iNTAiIGN5PSI1MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzNjM2MzIiBzdHJva2Utd2lkdGg9IjEwIiByPSIzNSIgc3Ryb2tlLWRhc2hhcnJheT0iMTY0LjkzMzYxNDMxMzQ2NDE1IDU2Ljk3Nzg3MTQzNzgyMTM4Ij4gICAgPGFuaW1hdGVUcmFuc2Zvcm0gYXR0cmlidXRlTmFtZT0idHJhbnNmb3JtIiB0eXBlPSJyb3RhdGUiIHJlcGVhdENvdW50PSJpbmRlZmluaXRlIiBkdXI9IjFzIiB2YWx1ZXM9IjAgNTAgNTA7MzYwIDUwIDUwIiBrZXlUaW1lcz0iMDsxIj48L2FuaW1hdGVUcmFuc2Zvcm0+ICA8L2NpcmNsZT48L3N2Zz4=");
   background-size: auto calc(min(50%, 400px));
@@ -107,14 +129,14 @@
     <div id="header-items">
     </div>
     <div class="pn-busy-container">
-      <div id="6fc0e1b9-073a-4ad3-bc6d-697bf6ec4868" data-root-id="p1018" style="display: contents;"></div>
+      <div id="dc947fbe-172d-4256-9952-ddfc5be2aeae" data-root-id="p1018" style="display: contents;"></div>
     </div>
   </nav>
 
   <div id="content">
 
     <div class="main" id="main">
-      <div id="9529a0b9-dd9b-4f64-91f0-f47f9ebf2cba" data-root-id="p1019" style="display: contents;"></div>
+      <div id="988f3e90-6b86-4305-acfd-0d0c7e261089" data-root-id="p1019" style="display: contents;"></div>
 
       <div id="pn-Modal" class="pn-modal header-adjust">
 	<div class="pn-modal-content">
@@ -151,13 +173,13 @@
 </script>
 
 
-<div id="d8acff1b-89ef-45bc-8e08-3a988fc4ebb8" data-root-id="p1011" style="display: contents;"></div>
-<div id="9137c63d-cd4a-4e5e-8263-55a50f66501c" data-root-id="p1014" style="display: contents;"></div>
-<div id="b2b2282c-6a10-42fe-9738-831832acd0c0" data-root-id="p1004" style="display: contents;"></div>
-<div id="29f12d5a-4038-46ec-a53b-aeb47f391385" data-root-id="p1015" style="display: contents;"></div>
+<div id="4b2bbc9c-7c9f-47b8-824e-8931faaf038e" data-root-id="p1011" style="display: contents;"></div>
+<div id="4509c0e6-bfe6-49cd-a617-d4cb39c0f39a" data-root-id="p1014" style="display: contents;"></div>
+<div id="12f08f5e-a666-4581-830e-9fed8a1e756a" data-root-id="p1004" style="display: contents;"></div>
+<div id="411fab99-2686-460e-8d95-c9a459fa48e4" data-root-id="p1015" style="display: contents;"></div>
 
   <py-config>
-    packages = ['https://cdn.holoviz.org/panel/1.2.3/dist/wheels/bokeh-3.2.2-py3-none-any.whl','https://cdn.holoviz.org/panel/1.2.3/dist/wheels/panel-1.2.3-py3-none-any.whl','pyodide-http==0.2.1', 'numpy','pandas','scikit-learn']
+    packages = ['https://cdn.holoviz.org/panel/1.2.3/dist/wheels/bokeh-3.2.2-py3-none-any.whl','https://cdn.holoviz.org/panel/1.2.3/dist/wheels/panel-1.2.3-py3-none-any.whl','pyodide-http==0.2.1','numpy','pandas','scikit-learn']
     </py-config>
     <py-script>
     import asyncio
@@ -169,19 +191,24 @@
     #!/usr/bin/env python
     # coding: utf-8
 
+    # # App
+
+    # This notebook creates an interactive Panel app that can be accessed using a web browser.
+
     # ## Imports
 
     # In[ ]:
 
 
+    import json
     import panel as pn
     import pandas as pd
+    import numpy as np
     from panel.widgets import Tabulator, TextInput, RangeSlider
     from bokeh.models.widgets.tables import NumberFormatter
     from sklearn.neighbors import NearestNeighbors
     from sklearn.preprocessing import StandardScaler
-    import numpy as np
-    import json
+
 
     pn.extension("tabulator")
 
@@ -193,10 +220,9 @@
 
     url = "https://raw.githubusercontent.com/music-recommender/music-recommender/main/data/song_info_complete_rows.csv"
 
-
     recom_cols = ["Year", "Tempo", "Latitude", "Longitude", "Overlapping genres"]
-    k = 5
 
+    k = 5
     tab_kwargs = dict(
         hidden_columns=["index", "ID", "Latitude", "Longitude", "Distance"],
         layout="fit_columns",
@@ -210,10 +236,10 @@
 
     Tabulator.theme = "midnight"
 
-    intro_text = "### Welcome to Music Recommender!"
-    songs_text = "### Please choose songs you like and we recommend songs tailored for you.\n### Select a song just by clicking it."
-    selected_text = "### Here you can see the selected songs. Remove a song just by clicking it."
-    recommend_text = "### Here we have songs for you. We used the selected songs to do our magic."
+    intro_text = "### Welcome to Music Recommender! This website can give you new and exciting songs to listen to based on your personal taste!"
+    songs_text = "### Please choose as many songs as you like from the table below and we will recommend new songs based on you selection.\n### Select a song by clicking on it. You can also use the filters to search for songs."
+    selected_text = "### Here you can see your selected songs. Remove a song by clicking on it."
+    recommend_text = "### These are your personal song recommendations. We used your selected songs to do our magic."
 
 
     # ## Tabulators
@@ -251,16 +277,16 @@
 
 
     title_filter = TextInput(
-        name="Title", placeholder='E.g. "merry-go-runaround" or "Merry"'
+        name="Title", placeholder='E.g. "Never Gonna Give You Up"'
     )
     artist_filter = TextInput(
-        name="Artist", placeholder='E.g. "bob" or "Bob Hope"'
+        name="Artist", placeholder='E.g. "Rick Astley"'
     )
     location_filter = TextInput(
-        name="Location", placeholder='E.g. "England" or "eltham"'
+        name="Location", placeholder='E.g. "England"'
     )
     genres_filter = TextInput(
-        name="Genres", placeholder='E.g. "blues" or "american blues jazz"'
+        name="Genres", placeholder='E.g. "Dance pop ballad"'
     )
     tempo_filter = RangeSlider(
         name="Tempo",
@@ -440,6 +466,29 @@
         header_background="#2e2e2e"
     )
 
+    css = ["""
+
+    nav, nav *, h1{
+      font-size: 35px;
+      color: #fff;
+      text-align: center;
+      animation: glow 1s ease-in-out infinite alternate;
+      text-align: center;
+    }
+
+    @-webkit-keyframes glow {
+      from {
+        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+      }
+      
+      to {
+        text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+      }
+    }
+    """]
+
+    template.config.raw_css = css
+
     template.main.append(
         pn.Column(
             intro_text,
@@ -454,8 +503,10 @@
                 year_filter
             ),
             songs_tab,
-            outputs
-        )
+            outputs,
+            stylesheets = css
+            # styles = {"text-shadow": "0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;"}
+        ),
     )
 
     template.servable()
