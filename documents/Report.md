@@ -6,9 +6,9 @@
 
 `TODO`
 
-### Link to user guide
+### Using the recommender
 
-`TODO`
+The final webpage is made to be as intuitive to use as possible. In theory, no instructions should be necessary aside from the ones given on the web page itself. However, a more detailed user guide is available [in the GitHub repository](https://github.com/music-recommender/music-recommender/blob/main/documents/user_guide.md).
 
 ## Technical description
 
